@@ -1,6 +1,160 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Language controls share the existing toolbar and shadcn Select styles. */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.language-select {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #617354;
+}
+.language-select [data-slot="select-trigger"] {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 12px;
+  padding: 0 4px;
+  height: 34px;
+  gap: 7px;
+}
+.hero-content,
+.coordinate-middle > strong {
+  min-width: 0;
+}
+.coordinate-value {
+  flex-shrink: 0;
+}
+.reset-label {
+  line-height: 1.6;
+}
+.section-heading h2 {
+  flex-wrap: wrap;
+}
+.panel-title > div {
+  flex-wrap: wrap;
+}
+.english-name {
+  text-transform: uppercase;
+}
+
+:root:lang(en) .map-nav button {
+  gap: 8px;
+}
+:root:lang(en) .map-nav button > span:nth-child(2) {
+  min-width: 0;
+}
+:root:lang(en) .reset-card {
+  max-width: 290px;
+}
+:root:lang(en) .hero h1 {
+  letter-spacing: -0.4px;
+}
+:root:lang(en) .hero-description {
+  max-width: 370px;
+}
+:root:lang(en) .reset-region {
+  flex-wrap: wrap;
+}
+:root:lang(en) .reset-region > span {
+  margin-left: 0;
+  width: 100%;
+  padding-left: 19px;
+}
+:root:lang(en) .coordinate-middle > strong {
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+:root:lang(en) .date-toolbar {
+  flex-wrap: wrap;
+}
+:root:lang(en) .region-select {
+  margin-left: auto;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .topbar-actions {
+    gap: 9px;
+    margin-left: auto;
+  }
+  .guide-button > span {
+    display: none;
+  }
+  .guide-button {
+    min-width: 28px;
+    min-height: 34px;
+    justify-content: center;
+  }
+  :root:lang(en) .brand {
+    margin-bottom: 12px;
+  }
+  :root:lang(en) .primary-nav {
+    position: static;
+    margin-bottom: 12px;
+  }
+  :root:lang(en) .primary-nav button {
+    flex: 1;
+    justify-content: center;
+  }
+  :root:lang(en) .hero {
+    flex-wrap: wrap;
+  }
+  :root:lang(en) .reset-card {
+    max-width: none;
+  }
+  :root:lang(en) .quick-dates {
+    margin-top: 4px;
+  }
+  :root:lang(en) .section-heading {
+    align-items: flex-start;
+  }
+  :root:lang(en) .section-heading h2 {
+    font-size: 17px;
+  }
+  :root:lang(en) .section-heading .live-badge {
+    white-space: nowrap;
+  }
+}
+@media (max-width: 560px) {
+  :root:lang(en) .reset-label {
+    max-width: 150px;
+    font-size: 9px;
+  }
+  :root:lang(en) .countdown {
+    font-size: 23px;
+  }
+  :root:lang(en) .reset-region > span {
+    display: inline;
+    font-size: 8px;
+  }
+  :root:lang(en) .location-side {
+    grid-template-columns: 1fr;
+  }
+  :root:lang(en) .copy-button {
+    margin-top: 15px;
+  }
+  :root:lang(en) .hero-tags {
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+  :root:lang(en) .hero h1 {
+    font-size: 27px;
+  }
+  :root:lang(en) .point-context {
+    line-height: 1.6;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -287,7 +441,7 @@ svg {
   font-weight: 500;
   color: #56664e;
 }
-.topbar > button {
+.guide-button {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1169,7 +1323,7 @@ footer > span {
 .field-note strong,
 .help-link,
 .breadcrumb,
-.topbar > button,
+.guide-button,
 .hero-description,
 .copy-button {
   font-size: 12px;

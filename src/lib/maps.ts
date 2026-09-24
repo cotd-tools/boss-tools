@@ -1,14 +1,14 @@
 import { indexImages } from "./image-index";
 
 export const maps = [
-  { id: 1, name: "天堂岛", en: "PARADISE ISLAND", points: 3 },
-  { id: 2, name: "北美五大湖", en: "GREAT LAKES", points: 4 },
-  { id: 3, name: "哥斯达黎加", en: "COSTA RICA", points: 3 },
-  { id: 4, name: "阿拉斯加", en: "ALASKA", points: 4 },
-  { id: 5, name: "澳大利亚", en: "AUSTRALIA", points: 4 },
-  { id: 6, name: "苏格兰", en: "SCOTLAND", points: 6 },
-  { id: 7, name: "泰国", en: "THAILAND", points: 4 },
-  { id: 8, name: "亚马逊", en: "AMAZON", points: 4 },
+  { id: 1, points: 3 },
+  { id: 2, points: 4 },
+  { id: 3, points: 3 },
+  { id: 4, points: 4 },
+  { id: 5, points: 4 },
+  { id: 6, points: 6 },
+  { id: 7, points: 4 },
+  { id: 8, points: 4 },
 ] as const;
 
 const files = import.meta.glob<string>(

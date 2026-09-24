@@ -16,7 +16,8 @@
     "clsx": "^2.1.1",
     "reka-ui": "^2.10.5",
     "tailwind-merge": "^3.7.0",
-    "vue": "^3.5.43"
+    "vue": "^3.5.43",
+    "vue-i18n": "^11.4.12"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

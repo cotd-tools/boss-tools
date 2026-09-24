@@ -63,10 +63,23 @@ npm run preview
 
 - `src/App.vue`：查询界面、图鉴、图片查看器和复制操作。
 - `src/lib/schedule.ts`：轮换、日期和刷新逻辑。
-- `src/lib/maps.ts`、`src/lib/image-index.ts`：地图名称、图片发现和分类。
+- `src/lib/maps.ts`、`src/lib/image-index.ts`：地图编号、图片发现和分类。
+- `src/i18n/locales/`：中文文案与英文翻译，包括地图名称。
 - `src/components/ui/`：由官方 shadcn-vue CLI 生成的组件，可用 `npx shadcn-vue@latest add ...` 扩展。
 - `src/style.css`：主题、响应式布局与无障碍动效偏好。
 - `.github/workflows/deploy.yml`：Pages 自动发布。
-- `tests/`：原版周期回归、刷新边界和图片覆盖验证。
+- `tests/`：周期回归、刷新边界、图片覆盖及翻译完整性验证。
+
+## 语言与文案维护
+
+界面支持简体中文与英文，右上角可随时切换。首次访问按浏览器语言选择，不支持的语言回退到简体中文；手动选择保存在 `localStorage` 的 `cotd-language-pref` 中，优先于浏览器语言。禁用本地存储时仍可切换，但不能记住偏好。
+
+切换语言不会改变服务器地区、查询日期、地图或所选点位。页面标题、描述、日期说明、地图名称、图片替代文本、弹窗按钮和复制内容会一起切换。日期输入框的原生日历界面仍由浏览器或系统决定语言。游戏截图保留原图，不翻译图片内文字。
+
+- 优化中文：编辑 `src/i18n/locales/zh-CN.json`。
+- 更新英文：编辑 `src/i18n/locales/en.json`，与中文保持相同的键和 `{point}` 等占位符。
+- 新增语言：复制语言文件翻译，在 `src/i18n/index.ts` 注册消息，在 `src/i18n/locale.ts` 添加语言选项和浏览器语言匹配规则。菜单从语言选项自动生成。
+- 包含数量的英文文案使用 Vue I18n 复数格式，例如 `{count} photo | {count} photos`。
+- 修改后运行 `npm test` 和 `npm run build`。测试会检查语言选择、键与占位符一致性、消息编译、英文复数和跨时区日期。
 
 界面不依赖远程字体、图片 CDN 或后端服务。
