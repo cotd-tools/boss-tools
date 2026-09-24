@@ -83,7 +83,7 @@
   "zoomOut": "Zoom out",
   "zoomIn": "Zoom in",
   "resetZoom": "Reset zoom",
-  "openOriginal": "Open original image",
+  "openOriginal": "Open image in new tab",
   "close": "Close",
   "copyTitle": "Copy spots manually",
   "copyDescription": "Automatic copying was unavailable. Select the text below and copy it manually.",
