@@ -2,6 +2,7 @@
 import { computed, onUnmounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { languageOptions } from "@/i18n/locale";
+import { themeOptions, useTheme } from "@/lib/theme";
 import {
   Anchor,
   ArrowDownToLine,
@@ -21,9 +22,12 @@ import {
   Info,
   Languages,
   MapPin,
+  Monitor,
+  Moon,
   Navigation,
   RotateCcw,
   Ship,
+  Sun,
   Waves,
   ZoomIn,
   ZoomOut,
@@ -60,6 +64,13 @@ import {
 } from "@/lib/schedule";
 
 const { t, locale } = useI18n();
+const { preference: themePreference } = useTheme();
+const themeIcons = { system: Monitor, light: Sun, dark: Moon };
+const themeLabels = {
+  system: "themeSystem",
+  light: "themeLight",
+  dark: "themeDark",
+};
 const mapName = (id: number) => t(`map${id}`);
 const englishMapName = (id: number) => t(`map${id}`, {}, { locale: "en" });
 const regionName = computed(() =>
@@ -293,6 +304,36 @@ const helpOpen = ref(false);
           }}</strong></span
         >
         <div class="topbar-actions">
+          <Select v-model="themePreference">
+            <SelectTrigger
+              class="theme-select"
+              :aria-label="t('theme')"
+              :title="`${t('theme')}: ${t(themeLabels[themePreference])}`"
+            >
+              <component
+                :is="themeIcons[themePreference]"
+                :size="16"
+                aria-hidden="true"
+              />
+              <SelectValue class="sr-only">{{
+                t(themeLabels[themePreference])
+              }}</SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem
+                v-for="option in themeOptions"
+                :key="option"
+                :value="option"
+              >
+                <component
+                  :is="themeIcons[option]"
+                  :size="15"
+                  aria-hidden="true"
+                />
+                {{ t(themeLabels[option]) }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
           <div class="language-select">
             <Languages :size="15" />
             <Select v-model="locale"
@@ -428,7 +469,9 @@ const helpOpen = ref(false);
           <div class="region-select">
             <Globe2 :size="15" /><Select v-model="region"
               ><SelectTrigger :aria-label="t('serverRegion')"
-                ><SelectValue /></SelectTrigger
+                ><SelectValue
+                  >{{ regionName }} · {{ resetHour }}:00</SelectValue
+                ></SelectTrigger
               ><SelectContent
                 ><SelectItem value="other"
                   >{{ t("regionOther") }} · 04:00</SelectItem
@@ -611,7 +654,10 @@ const helpOpen = ref(false);
               >
             </div>
             <div class="image-footnote">
-              <Info :size="14" /><i18n-t keypath="waterHint" tag="p" scope="global"
+              <Info :size="14" /><i18n-t
+                keypath="waterHint"
+                tag="p"
+                scope="global"
                 ><template #area
                   ><strong>{{ t("approximateArea") }}</strong></template
                 ></i18n-t

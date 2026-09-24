@@ -3,7 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#10231f" />
+    <meta name="theme-color" content="#f8f9f5" />
+    <script>
+      // Apply the saved appearance before the app and its styles paint.
+      (() => {
+        let preference = "system";
+        try {
+          preference = localStorage.getItem("cotd-theme-pref") || "system";
+        } catch {}
+        const dark =
+          preference === "dark" ||
+          (preference !== "light" &&
+            preference !== "dark" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.classList.toggle("dark", dark);
+        document.documentElement.style.colorScheme = dark ? "dark" : "light";
+        document.querySelector('meta[name="theme-color"]').content = dark
+          ? "#101b16"
+          : "#f8f9f5";
+      })();
+    </script>
     <meta
       name="description"
       content="查询每日 Boss 点位，对照地图停船，参考实景投放黑水。"
