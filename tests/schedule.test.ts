@@ -1,6 +1,5 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import {
   bossCode,
   dateKey,
@@ -11,19 +10,42 @@ import {
   duration,
 } from "../src/lib/schedule.ts";
 
-test("preserves every cycle entry from the original HTML, including dates before the anchor", () => {
-  const original = readFileSync(
-    new URL("../Boss点位速查.html", import.meta.url),
-    "utf8",
-  );
-  const cycle = JSON.parse(
-    original.match(/var CYCLE_26 = (\[[\s\S]*?\]);/)![1]!,
-  ) as string[];
+test("preserves the reference cycle, including dates before the anchor", () => {
+  // Snapshot of the original 26-day community cycle. Keep this independent of
+  // production CYCLE so accidental data changes still fail the regression test.
+  const expectedCycle = [
+    "23211211",
+    "14344644",
+    "13311111",
+    "31133333",
+    "33111311",
+    "11333133",
+    "34144544",
+    "23211211",
+    "23211211",
+    "32122522",
+    "14344644",
+    "21233233",
+    "34144544",
+    "32122522",
+    "24244444",
+    "11333133",
+    "32122522",
+    "21233233",
+    "33111311",
+    "23211211",
+    "32122522",
+    "32122522",
+    "23211211",
+    "23211211",
+    "21233233",
+    "23211211",
+  ];
   const anchor = new Date("2025-12-15T00:00:00Z");
   for (let offset = -78; offset <= 78; offset++) {
     assert.equal(
       bossCode(shiftDate(anchor, offset)),
-      cycle[((offset % 26) + 26) % 26],
+      expectedCycle[((offset % 26) + 26) % 26],
     );
   }
 });
