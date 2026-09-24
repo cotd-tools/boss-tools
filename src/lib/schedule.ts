@@ -32,8 +32,8 @@ export const CYCLE = [
   "23211211",
 ];
 export const REGIONS = {
-  other: { name: "其他地区服", hour: 4 },
-  us_ca: { name: "北美服", hour: 5 },
+  other: { hour: 4 },
+  us_ca: { hour: 5 },
 } as const;
 export type RegionKey = keyof typeof REGIONS;
 
@@ -74,11 +74,16 @@ export function parseDate(value: string): Date | null {
 export function shiftDate(date: Date, days: number): Date {
   return new Date(date.getTime() + days * DAY);
 }
-export function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("zh-CN", {
+export function formatDate(
+  date: Date,
+  locale = "zh-CN",
+  includeYear = false,
+): string {
+  return new Intl.DateTimeFormat(locale, {
     month: "long",
     day: "numeric",
     weekday: "long",
+    year: includeYear ? "numeric" : undefined,
     timeZone: "UTC",
   }).format(date);
 }
