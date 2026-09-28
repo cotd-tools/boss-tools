@@ -27,15 +27,27 @@ test("classifies map image 0 separately and sorts added references numerically",
 
 test("processed website images are unique and match the optimization manifest without requiring originals", () => {
   const root = new URL("../images/", import.meta.url);
-  const report = JSON.parse(readFileSync(new URL("optimization-report.json", root), "utf8"));
-  const indexed = indexImages(Object.fromEntries(readdirSync(root).map((name) => [name, name])));
-  const keys = indexed.map((image) => `${image.map}-${image.point}-${image.index}`);
+  const report = JSON.parse(
+    readFileSync(new URL("optimization-report.json", root), "utf8"),
+  );
+  const indexed = indexImages(
+    Object.fromEntries(readdirSync(root).map((name) => [name, name])),
+  );
+  const keys = indexed.map(
+    (image) => `${image.map}-${image.point}-${image.index}`,
+  );
   assert.equal(new Set(keys).size, keys.length, "duplicate references");
-  assert.deepEqual(indexed.map((image) => image.filename).sort(), report.images.map((image: { output: string }) => image.output).sort());
+  assert.deepEqual(
+    indexed.map((image) => image.filename).sort(),
+    report.images.map((image: { output: string }) => image.output).sort(),
+  );
   for (const image of report.images) {
     const bytes = readFileSync(new URL(image.output, root));
     assert.equal(bytes.length, image.outputBytes);
-    assert.equal(createHash("sha256").update(bytes).digest("hex"), image.outputSha256);
+    assert.equal(
+      createHash("sha256").update(bytes).digest("hex"),
+      image.outputSha256,
+    );
     assert.ok(image.outputBytes <= image.sourceBytes);
   }
 });
@@ -59,6 +71,8 @@ test("all scheduled map/point combinations have a black-water reference", () => 
     }
   }
   assert.ok(
-    images.find((image) => image.map === 7 && image.point === 3 && image.index === 0),
+    images.find(
+      (image) => image.map === 7 && image.point === 3 && image.index === 0,
+    ),
   );
 });
