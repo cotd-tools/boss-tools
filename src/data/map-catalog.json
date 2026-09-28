@@ -1,0 +1,10 @@
+[
+  { "id": 1, "slug": "paradise", "points": 3 },
+  { "id": 2, "slug": "great-lakes", "points": 4 },
+  { "id": 3, "slug": "costa-rica", "points": 3 },
+  { "id": 4, "slug": "alaska", "points": 4 },
+  { "id": 5, "slug": "australia", "points": 4 },
+  { "id": 6, "slug": "scotland", "points": 6 },
+  { "id": 7, "slug": "thailand", "points": 4 },
+  { "id": 8, "slug": "amazon", "points": 4 }
+]

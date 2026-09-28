@@ -1,0 +1,237 @@
+{
+  "version": 1,
+  "maps": {
+    "1": {
+      "imageRevision": "80b507b01d34448427acad4bf11624d867750ea7436d37aaf19e7db2bfc0d0a8",
+      "points": {
+        "1": {
+          "x": 0.187234,
+          "y": 0.166251,
+          "status": "confirmed",
+          "note": ""
+        },
+        "2": {
+          "x": 0.477128,
+          "y": 0.152782,
+          "status": "confirmed",
+          "note": ""
+        },
+        "3": {
+          "x": 0.782281,
+          "y": 0.14701,
+          "status": "confirmed",
+          "note": ""
+        }
+      }
+    },
+    "2": {
+      "imageRevision": "5682e410d0d28f2036fc59d926096266c29114d492ae5852d4dc36593937bffd",
+      "points": {
+        "1": {
+          "x": 0.685014,
+          "y": 0.895469,
+          "status": "confirmed",
+          "note": ""
+        },
+        "2": {
+          "x": 0.671663,
+          "y": 0.766557,
+          "status": "confirmed",
+          "note": ""
+        },
+        "3": {
+          "x": 0.747951,
+          "y": 0.739621,
+          "status": "confirmed",
+          "note": ""
+        },
+        "4": {
+          "x": 0.871919,
+          "y": 0.745393,
+          "status": "confirmed",
+          "note": ""
+        }
+      }
+    },
+    "3": {
+      "imageRevision": "935bf62d4d4fd693f9c753ffc559fa65a11a7e9a079f0488293615d1ebd1523a",
+      "points": {
+        "1": {
+          "x": 0.122389,
+          "y": 0.84352,
+          "status": "confirmed",
+          "note": ""
+        },
+        "2": {
+          "x": 0.288315,
+          "y": 0.831975,
+          "status": "confirmed",
+          "note": ""
+        },
+        "3": {
+          "x": 0.4695,
+          "y": 0.835824,
+          "status": "confirmed",
+          "note": ""
+        }
+      }
+    },
+    "4": {
+      "imageRevision": "9556dcf5143ca5b3f5ba0e894ff1a4edcf45b556c96d2e1dd4e2f11c0c1bb04b",
+      "points": {
+        "1": {
+          "x": 0.736508,
+          "y": 0.170099,
+          "status": "confirmed",
+          "note": ""
+        },
+        "2": {
+          "x": 0.826147,
+          "y": 0.150858,
+          "status": "confirmed",
+          "note": ""
+        },
+        "3": {
+          "x": 0.822332,
+          "y": 0.308631,
+          "status": "confirmed",
+          "note": ""
+        },
+        "4": {
+          "x": 0.620169,
+          "y": 0.197036,
+          "status": "confirmed",
+          "note": ""
+        }
+      }
+    },
+    "5": {
+      "imageRevision": "9c0abffbd775a40838877d556e8230aefde7985c4d7cd2ab8a732571c5b56a8b",
+      "points": {
+        "1": {
+          "x": 0.623983,
+          "y": 0.539518,
+          "status": "confirmed",
+          "note": ""
+        },
+        "2": {
+          "x": 0.665942,
+          "y": 0.437543,
+          "status": "confirmed",
+          "note": ""
+        },
+        "3": {
+          "x": 0.715529,
+          "y": 0.527974,
+          "status": "confirmed",
+          "note": ""
+        },
+        "4": {
+          "x": 0.616354,
+          "y": 0.847368,
+          "status": "confirmed",
+          "note": ""
+        }
+      }
+    },
+    "6": {
+      "imageRevision": "ce2ac9b2d288c04eab760d8c2cc15e73aa7bab2c1c43e19a27f957d1fc78001b",
+      "points": {
+        "1": {
+          "x": 0.168162,
+          "y": 0.589544,
+          "status": "confirmed",
+          "note": ""
+        },
+        "2": {
+          "x": 0.105224,
+          "y": 0.59724,
+          "status": "confirmed",
+          "note": ""
+        },
+        "3": {
+          "x": 0.152904,
+          "y": 0.310555,
+          "status": "confirmed",
+          "note": ""
+        },
+        "4": {
+          "x": 0.217749,
+          "y": 0.26053,
+          "status": "confirmed",
+          "note": ""
+        },
+        "5": {
+          "x": 0.562953,
+          "y": 0.145086,
+          "status": "confirmed",
+          "note": ""
+        },
+        "6": {
+          "x": 0.665942,
+          "y": 0.12777,
+          "status": "confirmed",
+          "note": ""
+        }
+      }
+    },
+    "7": {
+      "imageRevision": "09812fbf5872e76bb6559b326705452607eca1c54b4eb2f0001eb61cddb85ad1",
+      "points": {
+        "1": {
+          "x": 0.807075,
+          "y": 0.622253,
+          "status": "confirmed",
+          "note": ""
+        },
+        "2": {
+          "x": 0.730786,
+          "y": 0.662658,
+          "status": "confirmed",
+          "note": ""
+        },
+        "3": {
+          "x": 0.553417,
+          "y": 0.891621,
+          "status": "confirmed",
+          "note": ""
+        },
+        "4": {
+          "x": 0.746044,
+          "y": 0.903166,
+          "status": "confirmed",
+          "note": ""
+        }
+      }
+    },
+    "8": {
+      "imageRevision": "7af8a92914eefa67c912f4b7d82103a2f49d2ba18b79ca13b98bb21c65cb5cdd",
+      "points": {
+        "1": {
+          "x": 0.780904,
+          "y": 0.593374,
+          "status": "confirmed",
+          "note": ""
+        },
+        "2": {
+          "x": 0.823232,
+          "y": 0.72613,
+          "status": "confirmed",
+          "note": ""
+        },
+        "3": {
+          "x": 0.61544,
+          "y": 0.731902,
+          "status": "confirmed",
+          "note": ""
+        },
+        "4": {
+          "x": 0.753968,
+          "y": 0.893519,
+          "status": "confirmed",
+          "note": ""
+        }
+      }
+    }
+  }
+}

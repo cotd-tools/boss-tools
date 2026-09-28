@@ -50,7 +50,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { maps, images, pointsFor, referencesFor } from "@/lib/maps";
+import { maps, images, baseMaps, pointsFor, referencesFor } from "@/lib/maps";
+import BoatMap from "@/components/BoatMap.vue";
+import locationData from "@/data/boat-locations.json";
+import { confirmedMarkers, validateLocations } from "@/lib/boat-locations";
 import {
   bossCode,
   dateKey,
@@ -66,6 +69,9 @@ import {
 } from "@/lib/schedule";
 
 const { t, locale } = useI18n();
+const canEditMaps = import.meta.env.DEV;
+const locations = validateLocations(locationData);
+const mapViewerOpen = ref(false);
 const isMobile = useMediaQuery("(max-width: 760px)");
 const mapPickerOpen = ref(false);
 const referenceView = ref("water");
@@ -117,9 +123,11 @@ const point = computed(() => manualPoint.value ?? activePoint.value);
 const references = computed(() =>
   referencesFor(selectedMap.value, point.value),
 );
-const mapImage = computed(() =>
-  references.value.find((item) => item.index === 0),
+const baseMap = computed(() => baseMaps[selectedMap.value]!);
+const boatMarkers = computed(() =>
+  confirmedMarkers(locations, selectedMap.value, baseMap.value.revision),
 );
+const boatMarker = computed(() => boatMarkers.value[point.value]);
 const waterImages = computed(() =>
   references.value.filter((item) => item.index > 0),
 );
@@ -358,6 +366,13 @@ const helpOpen = ref(false);
           }}</strong></span
         >
         <div class="topbar-actions">
+          <a
+            v-if="canEditMaps"
+            class="editor-launch"
+            href="?editor=1"
+            :aria-label="t('editorTitle')"
+            ><MapPin :size="16" /><span>{{ t("editorLaunch") }}</span></a
+          >
           <Select v-model="themePreference">
             <SelectTrigger
               class="theme-select"
@@ -762,30 +777,28 @@ const helpOpen = ref(false);
                 </div>
                 <Navigation :size="16" />
               </div>
-              <button
-                v-if="mapImage"
-                class="map-preview"
-                :aria-label="
-                  t('enlargeMap', { name: mapName(selectedMap), point })
-                "
-                @click="openImage(references.indexOf(mapImage))"
-              >
-                <img
-                  :src="mapImage.url"
-                  :alt="t('mapAlt', { name: mapName(selectedMap), point })"
-                /><span><Expand :size="13" />{{ t("viewMap") }}</span>
-              </button>
-              <div v-else class="missing-map">
-                <div class="map-grid-art"><MapPin :size="28" /></div>
-                <strong>{{ t("missingMap") }}</strong>
-                <p>{{ t("missingMapHint") }}</p>
-                <Badge variant="outline">{{
-                  t("mapPoint", { map: selectedMap, point })
-                }}</Badge>
+              <BoatMap
+                :src="baseMap.url"
+                :alt="t('baseMapAlt', { name: mapName(selectedMap) })"
+                :markers="boatMarkers"
+                :selected="point"
+                @select="manualPoint = $event"
+              />
+              <div class="boat-map-status">
+                <strong>{{
+                  t(boatMarker ? "markerSelected" : "markerPending", { point })
+                }}</strong>
+                <p>
+                  {{ boatMarker ? t("mapCaption") : t("markerPendingHint") }}
+                </p>
+                <p v-if="boatMarker?.note">{{ boatMarker.note }}</p>
               </div>
-              <p v-if="mapImage" class="map-caption">
-                <MapPin :size="13" />{{ t("mapCaption") }}
-              </p>
+              <Button
+                variant="outline"
+                class="boat-map-expand"
+                @click="mapViewerOpen = true"
+                ><Expand :size="14" />{{ t("viewMap") }}</Button
+              >
             </article>
             <article class="fishing-note">
               <div class="note-heading">
@@ -826,6 +839,29 @@ const helpOpen = ref(false);
         <Compass :size="19" /><span>{{ t("mobileTodaySpot") }}</span>
       </button>
     </nav>
+    <Dialog v-model:open="mapViewerOpen">
+      <DialogContent class="boat-map-dialog">
+        <DialogHeader
+          ><DialogTitle>{{
+            t("mapAlt", { name: mapName(selectedMap), point })
+          }}</DialogTitle
+          ><DialogDescription>{{
+            t("mapCaption")
+          }}</DialogDescription></DialogHeader
+        >
+        <BoatMap
+          :src="baseMap.url"
+          :alt="t('baseMapAlt', { name: mapName(selectedMap) })"
+          :markers="boatMarkers"
+          :selected="point"
+          @select="manualPoint = $event"
+        />
+        <p class="boat-map-status">
+          {{ t(boatMarker ? "markerSelected" : "markerPending", { point })
+          }}<span v-if="boatMarker?.note"> · {{ boatMarker.note }}</span>
+        </p>
+      </DialogContent>
+    </Dialog>
     <Dialog v-model:open="mapPickerOpen">
       <DialogContent class="map-picker-dialog">
         <DialogHeader>
@@ -865,9 +901,7 @@ const helpOpen = ref(false);
             t("viewerTitle", { name: mapName(selectedMap), point })
           }}</DialogTitle
           ><DialogDescription>{{
-            viewerImage?.index === 0
-              ? t("viewerMapDescription")
-              : t("viewerWaterDescription", { index: viewerImage?.index ?? 1 })
+            t("viewerWaterDescription", { index: viewerImage?.index ?? 1 })
           }}</DialogDescription></DialogHeader
         >
         <div class="viewer-stage">
@@ -875,7 +909,7 @@ const helpOpen = ref(false);
             v-if="viewerImage"
             :src="viewerImage.url"
             :alt="
-              t(viewerImage.index === 0 ? 'mapAlt' : 'waterAlt', {
+              t('waterAlt', {
                 name: mapName(selectedMap),
                 point,
                 index: viewerImage.index,
