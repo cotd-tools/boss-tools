@@ -5,8 +5,9 @@ import { indexImages } from "../src/lib/image-index.ts";
 import { CYCLE } from "../src/lib/schedule.ts";
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
+import catalog from "../src/data/map-catalog.json" with { type: "json" };
 
-test("classifies map image 0 separately and sorts added references numerically", () => {
+test("ignores retired zero suffixes and sorts black-water references numerically", () => {
   const result = indexImages({
     "/images/7-3-10.jpeg": "ten",
     "/images/7-3-2.webp": "two",
@@ -19,10 +20,10 @@ test("classifies map image 0 separately and sorts added references numerically",
   });
   assert.deepEqual(
     result.filter((image) => image.map === 7).map((image) => image.index),
-    [0, 1, 2, 10],
+    [1, 2, 10],
   );
-  assert.equal(result[0]?.url, "map");
-  assert.equal(result.length, 5);
+  assert.equal(result[0]?.url, "one");
+  assert.equal(result.length, 4);
 });
 
 test("processed website images are unique and match the optimization manifest without requiring originals", () => {
@@ -39,7 +40,10 @@ test("processed website images are unique and match the optimization manifest wi
   assert.equal(new Set(keys).size, keys.length, "duplicate references");
   assert.deepEqual(
     indexed.map((image) => image.filename).sort(),
-    report.images.map((image: { output: string }) => image.output).sort(),
+    report.images
+      .filter((image: { key: string }) => /^\d+-/.test(image.key))
+      .map((image: { output: string }) => image.output)
+      .sort(),
   );
   for (const image of report.images) {
     const bytes = readFileSync(new URL(image.output, root));
@@ -49,6 +53,13 @@ test("processed website images are unique and match the optimization manifest wi
       image.outputSha256,
     );
     assert.ok(image.outputBytes <= image.sourceBytes);
+  }
+  for (const map of catalog) {
+    const image = report.images.find(
+      (image: { key: string }) => image.key === map.slug,
+    );
+    assert.ok(image, `missing base map ${map.slug}`);
+    assert.ok(image.width > 0 && image.height > 0);
   }
 });
 
@@ -70,9 +81,5 @@ test("all scheduled map/point combinations have a black-water reference", () => 
       );
     }
   }
-  assert.ok(
-    images.find(
-      (image) => image.map === 7 && image.point === 3 && image.index === 0,
-    ),
-  );
+  assert.ok(images.every((image) => image.index > 0));
 });

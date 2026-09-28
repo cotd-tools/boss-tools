@@ -484,3 +484,20 @@
     margin-left: auto;
   }
 }
+.editor-launch {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  min-height: 44px;
+}
+@media (max-width: 760px) {
+  .editor-launch {
+    width: 32px;
+    justify-content: center;
+  }
+  .editor-launch span {
+    display: none;
+  }
+}

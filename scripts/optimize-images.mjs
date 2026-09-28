@@ -3,13 +3,18 @@ import { createHash, randomUUID } from "node:crypto";
 import { readdir, readFile, writeFile, rename, unlink } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import catalog from "../src/data/map-catalog.json" with { type: "json" };
 
 const reportName = "optimization-report.json";
 const digest = (buffer) => createHash("sha256").update(buffer).digest("hex");
 const imagePattern = /^([1-8])-([1-9]\d*)-(\d+)\.(jpe?g|png|webp|avif)$/i;
 const referenceKey = (name) => {
+  const stem = name.replace(/\.(jpe?g|png|webp|avif)$/i, "");
+  if (stem !== name && catalog.some((map) => map.slug === stem)) return stem;
   const match = imagePattern.exec(name);
-  return match ? match.slice(1, 4).map(Number).join("-") : null;
+  return match && Number(match[3]) > 0
+    ? match.slice(1, 4).map(Number).join("-")
+    : null;
 };
 
 async function optionalFile(path) {
@@ -36,7 +41,7 @@ async function atomicWrite(path, data) {
 export function encodingFor(key, format) {
   if (format === "avif")
     return {
-      quality: key.endsWith("-0") ? 70 : 65,
+      quality: catalog.some((map) => map.slug === key) ? 70 : 65,
       effort: 6,
       chromaSubsampling: "4:4:4",
     };
