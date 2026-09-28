@@ -1,6 +1,7 @@
 import { createApp, watch } from "vue";
 import App from "./App.vue";
 import "./style.css";
+import "./mobile.css";
 import { createAppI18n } from "./i18n";
 import { LOCALE_STORAGE_KEY, resolveLocale } from "./i18n/locale";
 
