@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onUnmounted, ref, watch } from "vue";
+import { computed, nextTick, onUnmounted, ref, watch } from "vue";
+import { useMediaQuery } from "@vueuse/core";
 import { useI18n } from "vue-i18n";
 import { languageOptions } from "@/i18n/locale";
 import { themeOptions, useTheme } from "@/lib/theme";
@@ -21,6 +22,7 @@ import {
   ImageIcon,
   Info,
   Languages,
+  LayoutGrid,
   MapPin,
   Monitor,
   Moon,
@@ -64,6 +66,9 @@ import {
 } from "@/lib/schedule";
 
 const { t, locale } = useI18n();
+const isMobile = useMediaQuery("(max-width: 760px)");
+const mapPickerOpen = ref(false);
+const referenceView = ref("water");
 const { preference: themePreference } = useTheme();
 const themeIcons = { system: Monitor, light: Sun, dark: Moon };
 const themeLabels = {
@@ -119,6 +124,24 @@ const waterImages = computed(() =>
   references.value.filter((item) => item.index > 0),
 );
 const waterIndex = ref(0);
+const thumbnailList = ref<HTMLElement | null>(null);
+watch(
+  waterIndex,
+  () => {
+    const list = thumbnailList.value;
+    const active = list?.querySelector<HTMLElement>("button.active");
+    if (!list || !active) return;
+    const left =
+      active.getBoundingClientRect().left -
+      list.getBoundingClientRect().left +
+      list.scrollLeft;
+    list.scrollTo({
+      left: left - (list.clientWidth - active.clientWidth) / 2,
+      behavior: "instant",
+    });
+  },
+  { flush: "post" },
+);
 const waterImage = computed(() => waterImages.value[waterIndex.value]);
 const toast = ref<"copied" | "">("");
 let toastTimer: ReturnType<typeof setTimeout> | undefined;
@@ -174,14 +197,38 @@ function selectMap(id: number) {
   selectedMap.value = id;
   manualPoint.value = null;
 }
-function showDetail(id: number) {
+async function showDetail(id: number) {
   selectMap(id);
+  if (isMobile.value) {
+    view.value = "atlas";
+    await nextTick();
+    window.scrollTo({ top: 0, behavior: "instant" });
+    return;
+  }
   document.getElementById("location-detail")?.scrollIntoView({
     behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
       ? "instant"
       : "smooth",
     block: "start",
   });
+}
+async function showOverview() {
+  view.value = "daily";
+  await nextTick();
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+function showTodaySpot() {
+  quickDate(0);
+  showDetail(selectedMap.value);
+}
+function chooseMobileMap(id: number) {
+  mapPickerOpen.value = false;
+  showDetail(id);
+}
+function changeWater(delta: number) {
+  waterIndex.value =
+    (waterIndex.value + delta + waterImages.value.length) %
+    waterImages.value.length;
 }
 
 const copyOpen = ref(false);
@@ -240,7 +287,7 @@ const helpOpen = ref(false);
 </script>
 
 <template>
-  <div class="app-shell" :data-locale="locale">
+  <div class="app-shell" :data-locale="locale" :data-view="view">
     <aside class="sidebar">
       <a
         class="brand"
@@ -298,6 +345,13 @@ const helpOpen = ref(false);
     </aside>
     <main class="main-content">
       <header class="topbar">
+        <button
+          class="mobile-brand"
+          :aria-label="t('mobileOverview')"
+          @click="showOverview"
+        >
+          <Waves :size="23" /><strong>{{ t("brandName") }}</strong>
+        </button>
         <span class="breadcrumb"
           >{{ t("tools") }}<ChevronRight :size="13" /><strong>{{
             t(view === "daily" ? "daily" : "atlas")
@@ -523,6 +577,7 @@ const helpOpen = ref(false);
         <p class="date-hint"><Clock3 :size="13" />{{ t("dateHint") }}</p>
       </section>
       <section
+        v-if="!isMobile || view === 'atlas'"
         id="location-detail"
         class="detail-section"
         aria-labelledby="detail-heading"
@@ -585,7 +640,25 @@ const helpOpen = ref(false);
             }}</span
           >
         </div>
-        <div class="guide-grid">
+        <div
+          class="mobile-reference-switch"
+          role="group"
+          :aria-label="t('referenceType')"
+        >
+          <button
+            :aria-pressed="referenceView === 'water'"
+            @click="referenceView = 'water'"
+          >
+            <Droplets :size="17" />{{ t("waterTitle") }}
+          </button>
+          <button
+            :aria-pressed="referenceView === 'map'"
+            @click="referenceView = 'map'"
+          >
+            <Ship :size="17" />{{ t("mapTitle") }}
+          </button>
+        </div>
+        <div class="guide-grid" :data-reference="referenceView">
           <article class="water-panel">
             <div class="panel-title">
               <div>
@@ -633,7 +706,15 @@ const helpOpen = ref(false);
               <p>{{ t("missingWaterHint") }}</p>
             </div>
             <div class="image-strip">
-              <div class="thumbnail-list">
+              <button
+                v-if="waterImages.length > 1"
+                class="mobile-image-step"
+                :aria-label="t('previousImage')"
+                @click="changeWater(-1)"
+              >
+                <ChevronLeft :size="18" />
+              </button>
+              <div ref="thumbnailList" class="thumbnail-list">
                 <button
                   v-for="(item, index) in waterImages"
                   :key="item.filename"
@@ -652,6 +733,14 @@ const helpOpen = ref(false);
                 {{ waterImages.length
                 }}<small>{{ t("placementReference") }}</small></span
               >
+              <button
+                v-if="waterImages.length > 1"
+                class="mobile-image-step"
+                :aria-label="t('nextImage')"
+                @click="changeWater(1)"
+              >
+                <ChevronRight :size="18" />
+              </button>
             </div>
             <div class="image-footnote">
               <Info :size="14" /><i18n-t
@@ -723,6 +812,47 @@ const helpOpen = ref(false);
         ><span>{{ t("disclaimer") }}</span>
       </footer>
     </main>
+    <nav class="mobile-dock" :aria-label="t('mainNav')">
+      <button
+        :aria-current="view === 'daily' ? 'page' : undefined"
+        @click="showOverview"
+      >
+        <LayoutGrid :size="19" /><span>{{ t("mobileOverview") }}</span>
+      </button>
+      <button @click="mapPickerOpen = true" aria-haspopup="dialog">
+        <MapPin :size="19" /><span>{{ t("mobileMaps") }}</span>
+      </button>
+      <button @click="showTodaySpot">
+        <Compass :size="19" /><span>{{ t("mobileTodaySpot") }}</span>
+      </button>
+    </nav>
+    <Dialog v-model:open="mapPickerOpen">
+      <DialogContent class="map-picker-dialog">
+        <DialogHeader>
+          <DialogTitle>{{ t("destinations") }}</DialogTitle>
+          <DialogDescription>{{
+            t("mapPickerHint", { date: formatDate(selectedDate, locale) })
+          }}</DialogDescription>
+        </DialogHeader>
+        <div class="map-picker-grid">
+          <button
+            v-for="item in maps"
+            :key="item.id"
+            :aria-pressed="selectedMap === item.id"
+            @click="chooseMobileMap(item.id)"
+          >
+            <span class="map-number">{{
+              t("mapNumber", { map: item.id })
+            }}</span>
+            <strong>{{ mapName(item.id) }}</strong>
+            <span class="picker-point"
+              >{{ t("pointLabel", { point: code[item.id - 1] })
+              }}<ArrowRight :size="15"
+            /></span>
+          </button>
+        </div>
+      </DialogContent>
+    </Dialog>
     <Transition name="toast"
       ><div v-if="toast" class="toast-message" role="status">
         <Check :size="17" />{{ t(toast) }}
@@ -753,7 +883,7 @@ const helpOpen = ref(false);
             "
             :style="{
               width: `${zoom * 100}%`,
-              height: `${zoom * 60}dvh`,
+              height: isMobile ? 'auto' : `${zoom * 60}dvh`,
               maxWidth: 'none',
             }"
           />
