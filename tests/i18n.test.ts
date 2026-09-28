@@ -52,6 +52,7 @@ test("messages render without compiler errors and plural forms follow the select
       point: 3,
       index: 1,
       area: "approximate area",
+      status: "confirmed",
     };
     for (const locale of supportedLocales) {
       i18n.global.locale.value = locale;

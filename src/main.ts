@@ -1,5 +1,4 @@
-import { createApp, watch } from "vue";
-import App from "./App.vue";
+import { createApp, defineAsyncComponent, watch } from "vue";
 import "./style.css";
 import "./mobile.css";
 import { createAppI18n } from "./i18n";
@@ -30,4 +29,10 @@ watch(i18n.global.locale, (locale) => {
     /* Keep switching available without storage. */
   }
 });
-createApp(App).use(i18n).mount("#app");
+const Root = defineAsyncComponent(
+  import.meta.env.DEV &&
+    new URLSearchParams(location.search).get("editor") === "1"
+    ? () => import("./components/MapEditor.vue")
+    : () => import("./App.vue"),
+);
+createApp(Root).use(i18n).mount("#app");

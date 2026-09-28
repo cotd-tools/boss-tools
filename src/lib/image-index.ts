@@ -6,7 +6,7 @@ export interface ReferenceImage {
   filename: string;
 }
 
-// A zero suffix is a boat/map location; positive suffixes are black-water references.
+// Only positive suffixes are black-water references. Boat markers use shared base maps.
 export function indexImages(files: Record<string, string>): ReferenceImage[] {
   return Object.entries(files)
     .flatMap(([path, url]) => {
@@ -16,7 +16,7 @@ export function indexImages(files: Record<string, string>): ReferenceImage[] {
       );
       if (!match) return [];
       const [, map, point, index] = match;
-      if (+map! < 1 || +map! > 8 || +point! < 1) return [];
+      if (+map! < 1 || +map! > 8 || +point! < 1 || +index! < 1) return [];
       return [{ map: +map!, point: +point!, index: +index!, url, filename }];
     })
     .sort(

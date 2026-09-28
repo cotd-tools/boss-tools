@@ -1,18 +1,14 @@
 import { indexImages } from "./image-index";
+import catalog from "../data/map-catalog.json";
+import report from "../../images/optimization-report.json";
 
-export const maps = [
-  { id: 1, points: 3 },
-  { id: 2, points: 4 },
-  { id: 3, points: 3 },
-  { id: 4, points: 4 },
-  { id: 5, points: 4 },
-  { id: 6, points: 6 },
-  { id: 7, points: 4 },
-  { id: 8, points: 4 },
-] as const;
+export const maps = catalog;
 
 const files = import.meta.glob<string>(
-  "/images/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}",
+  [
+    "/images/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}",
+    "!/images/*-0.*",
+  ],
   {
     eager: true,
     query: "?url",
@@ -20,6 +16,24 @@ const files = import.meta.glob<string>(
   },
 );
 export const images = indexImages(files);
+export const baseMaps = Object.fromEntries(
+  maps.map((map) => {
+    const asset = report.images.find((image) => image.key === map.slug);
+    if (!asset)
+      throw new Error(
+        `Missing base map ${map.slug}. Run npm run images:optimize.`,
+      );
+    return [
+      map.id,
+      {
+        url: files[`/images/${asset.output}`]!,
+        revision: asset.sourceSha256,
+        width: asset.width,
+        height: asset.height,
+      },
+    ];
+  }),
+);
 export const referencesFor = (map: number, point: number) =>
   images.filter((image) => image.map === map && image.point === point);
 export const pointsFor = (map: (typeof maps)[number]) =>
