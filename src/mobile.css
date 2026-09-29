@@ -76,6 +76,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+  :root:lang(en) .mobile-brand strong {
+    white-space: normal;
+    line-height: 1.2;
+    overflow: visible;
+  }
   .app-shell .topbar-actions {
     gap: 4px;
     flex-shrink: 0;
@@ -461,6 +466,9 @@
   }
 }
 @media (max-width: 350px) {
+  :root:lang(en) .mobile-brand > svg {
+    display: none;
+  }
   .app-shell .main-content {
     padding: 0 12px;
   }

@@ -1005,6 +1005,14 @@ const helpOpen = ref(false);
           </div>
         </div>
         <div class="help-section">
+          <Droplets />
+          <div>
+            <h3>{{ t("helpBaitTitle") }}</h3>
+            <p>{{ t("helpBaitBody") }}</p>
+            <p>{{ t("helpBaitOptional") }}</p>
+          </div>
+        </div>
+        <div class="help-section">
           <Clock3 />
           <div>
             <h3>{{ t("helpResetTitle") }}</h3>
@@ -1019,6 +1027,13 @@ const helpOpen = ref(false);
           </div>
         </div>
         <p class="help-disclaimer">{{ t("helpDataNote") }}</p>
+        <nav class="help-sources" :aria-label="t('helpSources')">
+          <span>{{ t("helpSources") }}</span>
+          <a href="https://creatures-of-the-deep-app.fandom.com/wiki/Baits" target="_blank" rel="noopener noreferrer">{{ t("helpSourceBaits") }}</a>
+          <a href="https://creatures-of-the-deep-app.fandom.com/wiki/Fishing_guide" target="_blank" rel="noopener noreferrer">{{ t("helpSourceFishing") }}</a>
+          <a href="https://creatures-of-the-deep-app.fandom.com/wiki/Nessie" target="_blank" rel="noopener noreferrer">{{ t("helpSourceNessie") }}</a>
+          <a href="https://creatures-of-the-deep-app.fandom.com/wiki/Bessie" target="_blank" rel="noopener noreferrer">{{ t("helpSourceSchedule") }}</a>
+        </nav>
       </DialogContent></Dialog
     >
   </div>
