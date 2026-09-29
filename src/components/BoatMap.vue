@@ -37,7 +37,9 @@ watch(
   () => props.src,
   () => {
     zoom.value = 1;
+    scrollport.value?.scrollTo({ top: 0, left: 0, behavior: "instant" });
   },
+  { flush: "post" },
 );
 function place(event: PointerEvent) {
   if (
@@ -239,9 +241,6 @@ function place(event: PointerEvent) {
 .boat-map-status p {
   margin-top: 4px;
   white-space: pre-wrap;
-}
-.boat-map-expand {
-  margin: 0 12px 12px;
 }
 @media (max-width: 760px) {
   .boat-map-tools button {

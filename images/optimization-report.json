@@ -1,8 +1,8 @@
 {
   "version": 1,
   "format": "avif",
-  "sourceBytes": 16890679,
-  "outputBytes": 4139086,
+  "sourceBytes": 17112046,
+  "outputBytes": 4244696,
   "images": [
     {
       "key": "1-1-1",
@@ -17,7 +17,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "1-2-1",
@@ -32,7 +32,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "1-3-1",
@@ -47,7 +47,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "2-1-1",
@@ -62,7 +62,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "2-2-1",
@@ -77,7 +77,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "2-3-1",
@@ -92,7 +92,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "2-4-1",
@@ -107,7 +107,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "3-1-1",
@@ -122,7 +122,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "3-2-1",
@@ -137,7 +137,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "3-3-1",
@@ -152,7 +152,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "4-1-1",
@@ -167,7 +167,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "4-2-1",
@@ -182,7 +182,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "4-3-1",
@@ -197,7 +197,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "4-4-1",
@@ -212,7 +212,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "5-1-1",
@@ -227,7 +227,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "5-2-1",
@@ -242,7 +242,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "5-3-1",
@@ -257,7 +257,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "5-4-1",
@@ -272,7 +272,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "6-1-1",
@@ -287,7 +287,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "6-2-1",
@@ -302,7 +302,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "6-2-2",
@@ -317,7 +317,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "6-2-3",
@@ -332,7 +332,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "6-3-1",
@@ -347,7 +347,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "6-4-1",
@@ -362,7 +362,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "6-5-1",
@@ -377,7 +377,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "6-6-1",
@@ -392,7 +392,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-1-1",
@@ -407,7 +407,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-1-2",
@@ -422,7 +422,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-1-3",
@@ -437,7 +437,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-1-4",
@@ -452,7 +452,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-1-5",
@@ -467,7 +467,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-1-6",
@@ -482,7 +482,22 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
+    },
+    {
+      "key": "7-1-7",
+      "source": "7-1-7.jpg",
+      "output": "7-1-7.avif",
+      "sourceSha256": "266225e6d9bd59fc12874d700ca4b8a1bf40946c0f4db87ac899b99a8b009822",
+      "outputSha256": "43862d3bdd56a4451ff9b0e9560d167a6e1b52130866619ddce6f940f359e4d2",
+      "sourceBytes": 221367,
+      "outputBytes": 105610,
+      "width": 2532,
+      "height": 1170,
+      "format": "avif",
+      "quality": 65,
+      "sourceKept": false,
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-2-1",
@@ -497,7 +512,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-3-1",
@@ -512,7 +527,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-3-2",
@@ -527,7 +542,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-3-3",
@@ -542,7 +557,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-3-4",
@@ -557,7 +572,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-3-5",
@@ -572,7 +587,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-3-6",
@@ -587,7 +602,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-3-7",
@@ -602,7 +617,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-3-8",
@@ -617,7 +632,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-4-1",
@@ -632,7 +647,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-4-2",
@@ -647,7 +662,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "7-4-3",
@@ -662,7 +677,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "8-1-1",
@@ -677,7 +692,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "8-1-2",
@@ -692,7 +707,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "8-2-1",
@@ -707,7 +722,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "8-3-1",
@@ -722,7 +737,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "8-4-1",
@@ -737,7 +752,7 @@
       "format": "avif",
       "quality": 65,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "alaska",
@@ -752,7 +767,7 @@
       "format": "avif",
       "quality": 70,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "amazon",
@@ -767,7 +782,7 @@
       "format": "avif",
       "quality": 70,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "australia",
@@ -782,7 +797,7 @@
       "format": "avif",
       "quality": 70,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "costa-rica",
@@ -797,7 +812,7 @@
       "format": "avif",
       "quality": 70,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "great-lakes",
@@ -812,7 +827,7 @@
       "format": "avif",
       "quality": 70,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "paradise",
@@ -827,7 +842,7 @@
       "format": "avif",
       "quality": 70,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "scotland",
@@ -842,7 +857,7 @@
       "format": "avif",
       "quality": 70,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
       "key": "thailand",
@@ -857,7 +872,7 @@
       "format": "avif",
       "quality": 70,
       "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.4\",\"vips\":\"8.18.6\",\"pipeline\":1}"
+      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":70,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     }
   ]
 }
