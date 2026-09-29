@@ -7,7 +7,7 @@ import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import catalog from "../src/data/map-catalog.json" with { type: "json" };
 
-test("ignores retired zero suffixes and sorts black-water references numerically", () => {
+test("ignores retired zero suffixes and sorts Monster Bait references numerically", () => {
   const result = indexImages({
     "/images/7-3-10.jpeg": "ten",
     "/images/7-3-2.webp": "two",
@@ -63,7 +63,7 @@ test("processed website images are unique and match the optimization manifest wi
   }
 });
 
-test("all scheduled map/point combinations have a black-water reference", () => {
+test("all scheduled map/point combinations have a Monster Bait reference", () => {
   const filenames = readdirSync(new URL("../images/", import.meta.url));
   const images = indexImages(
     Object.fromEntries(filenames.map((name) => [name, name])),
