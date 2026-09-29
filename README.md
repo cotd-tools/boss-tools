@@ -25,12 +25,20 @@ npm run preview
 
 ## 部署到 GitHub Pages
 
-1. 将此目录的源代码（包括 `images/`、`package-lock.json`、`.github/`）上传到 GitHub 仓库的 `main` 或 `master` 分支；不要上传 `node_modules/` 和 `dist/`。
+1. 将此目录的源代码（包括 `images/`、`package-lock.json`、`.github/`）上传到 GitHub 仓库；使用 `dev` 分支验证改动，`main` 分支发布网站。不要上传 `node_modules/` 和 `dist/`。
 2. 在仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
-3. 推送代码，或在 **Actions → Deploy to GitHub Pages → Run workflow** 手动运行。
+3. 合并代码到对应分支，或在 **Actions → Test and Deploy → Run workflow** 选择分支后手动运行。
 4. 工作流成功后，Pages 设置页会显示网站地址。
 
-工作流先运行点位和资源检查，再构建、发布 `dist/`。Vite 使用相对资源路径 `base: './'`，支持仓库子路径、根路径和自定义域名。本项目没有依赖服务器重写的路由。
+工作流按分支执行：
+
+- 合并到 `dev`：运行 `npm test`，不构建或发布 Pages。
+- 合并到 `main`：先运行 `npm test`；通过后运行 `npm run build`，成功后发布 `dist/`。测试或构建失败均不会发布。
+- 使用分支 `push` 事件覆盖普通合并、Squash 和 Rebase；直接推送到这两个分支也会触发对应流程。其他分支与标签不自动触发。
+- 手动运行时，只有选择 `main` 才会构建和发布；选择其他分支仅运行测试。
+- `dev` 与 `main` 的任务互不取消。同一 `dev` 分支的新任务会取消旧测试；`main` 正在执行的发布会完成后再处理后续任务。
+
+Vite 使用相对资源路径 `base: './'`，支持仓库子路径、根路径和自定义域名。本项目没有依赖服务器重写的路由。
 
 参考：[Vite 静态部署文档](https://vite.dev/guide/static-deploy)、[shadcn-vue Vite 安装文档](https://www.shadcn-vue.com/docs/installation/vite)。
 
@@ -49,7 +57,7 @@ npm run preview
 - 序号按数字排序（`2` 在 `10` 前）；可有间隔。
 - 未确认停船坐标的点位会显示底图和“待确认”提示，不会生成猜测的标记。
 - 缩略图可以裁切；主要参考图和放大视图完整展示图片，避免丢失位置线索。
-- 图片在构建时自动发现。新增原图后先运行压缩命令，再提交 `images/` 内的生成图片和 `optimization-report.json`，让 Actions 重新发布。CI 测试与构建不依赖原图目录。
+- 图片在构建时自动发现。新增原图后先运行压缩命令，再提交 `images/` 内的生成图片和 `optimization-report.json`，合并到 `main` 后由 Actions 重新发布。CI 测试与构建不依赖原图目录。
 - 新增已知地图的新点位时，点位按钮会自动出现；**图片本身不会修改每日轮换数据**。
 
 地图编号：1 天堂岛、2 北美五大湖、3 哥斯达黎加、4 阿拉斯加、5 澳大利亚、6 苏格兰、7 泰国、8 亚马逊。
@@ -95,7 +103,7 @@ npm test
 npm run build
 ```
 
-检查后提交坐标 JSON；新增或替换底图时一并提交生成图片、`images/optimization-report.json` 与目录配置，再推送到 `main` / `master`，由现有 GitHub Actions 发布。**保存到项目、导出备份都不会自动推送或发布网站。**
+检查后提交坐标 JSON；新增或替换底图时一并提交生成图片、`images/optimization-report.json` 与目录配置。合并到 `dev` 后由 GitHub Actions 测试，合并到 `main` 后测试、构建并发布。**保存到项目、导出备份都不会自动推送或发布网站。**
 
 ### 草稿、冲突与恢复
 
@@ -160,7 +168,7 @@ npm run images:optimize -- --format=webp
 - `src/components/ui/`：由官方 shadcn-vue CLI 生成的组件，可用 `npx shadcn-vue@latest add ...` 扩展。
 - `src/style.css`：主题、响应式布局与无障碍动效偏好。
 - `src/mobile.css`：手机总览、底部导航、参考图切换与触控布局。
-- `.github/workflows/deploy.yml`：Pages 自动发布。
+- `.github/workflows/deploy.yml`：`dev` 自动测试，`main` 测试通过后构建并发布 Pages。
 - `tests/`：周期回归、刷新边界、图片覆盖及翻译完整性验证。
 
 ## 语言与文案维护
