@@ -6,7 +6,7 @@ export interface ReferenceImage {
   filename: string;
 }
 
-// Only positive suffixes are black-water references. Boat markers use shared base maps.
+// Only positive suffixes are Monster Bait references. Boat markers use shared base maps.
 export function indexImages(files: Record<string, string>): ReferenceImage[] {
   return Object.entries(files)
     .flatMap(([path, url]) => {
