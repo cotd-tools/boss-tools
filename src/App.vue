@@ -29,6 +29,7 @@ import {
   Navigation,
   RotateCcw,
   Ship,
+  Settings2,
   Sun,
   Waves,
   ZoomIn,
@@ -52,8 +53,10 @@ import {
 } from "@/components/ui/dialog";
 import { maps, images, baseMaps, pointsFor, referencesFor } from "@/lib/maps";
 import BoatMap from "@/components/BoatMap.vue";
+import PreferencesDialog from "@/components/PreferencesDialog.vue";
 import locationData from "@/data/boat-locations.json";
 import { confirmedMarkers, validateLocations } from "@/lib/boat-locations";
+import { imageSwipeDirection } from "@/lib/image-gestures";
 import {
   bossCode,
   dateKey,
@@ -74,7 +77,8 @@ const locations = validateLocations(locationData);
 const mapViewerOpen = ref(false);
 const isMobile = useMediaQuery("(max-width: 760px)");
 const mapPickerOpen = ref(false);
-const referenceView = ref("water");
+const referenceView = ref("map");
+const settingsOpen = ref(false);
 const { preference: themePreference } = useTheme();
 const themeIcons = { system: Monitor, light: Sun, dark: Moon };
 const themeLabels = {
@@ -134,7 +138,7 @@ const waterImages = computed(() =>
 const waterIndex = ref(0);
 const thumbnailList = ref<HTMLElement | null>(null);
 watch(
-  waterIndex,
+  [waterIndex, () => waterImages.value[waterIndex.value]?.url, referenceView, view],
   () => {
     const list = thumbnailList.value;
     const active = list?.querySelector<HTMLElement>("button.active");
@@ -202,15 +206,22 @@ function quickDate(offset: number) {
   chooseDate(shiftDate(live.value, offset), offset === 0);
 }
 function selectMap(id: number) {
+  if (selectedMap.value === id) return;
   selectedMap.value = id;
   manualPoint.value = null;
+  referenceView.value = "map";
 }
-async function showDetail(id: number) {
+async function showDetail(id: number, preserveSelection = false) {
   selectMap(id);
+  if (!preserveSelection) {
+    manualPoint.value = null;
+    referenceView.value = "map";
+  }
   if (isMobile.value) {
     view.value = "atlas";
     await nextTick();
     window.scrollTo({ top: 0, behavior: "instant" });
+    document.getElementById("detail-heading")?.focus({ preventScroll: true });
     return;
   }
   document.getElementById("location-detail")?.scrollIntoView({
@@ -224,16 +235,27 @@ async function showOverview() {
   view.value = "daily";
   await nextTick();
   window.scrollTo({ top: 0, behavior: "instant" });
+  document.getElementById("daily-heading")?.focus({ preventScroll: true });
 }
 function showTodaySpot() {
   quickDate(0);
-  showDetail(selectedMap.value);
+  if (view.value === "atlas") {
+    referenceView.value = "map";
+    showDetail(selectedMap.value);
+  }
 }
 function chooseMobileMap(id: number) {
   mapPickerOpen.value = false;
-  showDetail(id);
+  showDetail(id, true);
+}
+async function showBait() {
+  referenceView.value = "water";
+  await nextTick();
+  window.scrollTo({ top: 0, behavior: "instant" });
+  document.getElementById("detail-heading")?.focus({ preventScroll: true });
 }
 function changeWater(delta: number) {
+  if (waterImages.value.length < 2) return;
   waterIndex.value =
     (waterIndex.value + delta + waterImages.value.length) %
     waterImages.value.length;
@@ -269,6 +291,69 @@ async function copyPositions() {
 const viewerOpen = ref(false);
 const viewerIndex = ref(0);
 const zoom = ref(1);
+const viewerStage = ref<HTMLElement | null>(null);
+let viewerGesture: { id: number; x: number; y: number; left: number; top: number; pan: boolean } | null = null;
+let viewerDragged = false;
+function startViewerGesture(event: PointerEvent) {
+  viewerDragged = false;
+  if (!event.isPrimary || event.button !== 0) {
+    viewerGesture = null;
+    return;
+  }
+  viewerGesture = {
+    id: event.pointerId,
+    x: event.clientX,
+    y: event.clientY,
+    left: viewerStage.value?.scrollLeft ?? 0,
+    top: viewerStage.value?.scrollTop ?? 0,
+    pan: zoom.value > 1 && event.pointerType === "mouse" && !(event.target as HTMLElement).closest("button"),
+  };
+}
+function moveViewerGesture(event: PointerEvent) {
+  const gesture = viewerGesture;
+  if (!gesture || gesture.id !== event.pointerId) return;
+  const dx = event.clientX - gesture.x;
+  const dy = event.clientY - gesture.y;
+  if (Math.hypot(dx, dy) > 8) viewerDragged = true;
+  if (gesture.pan && viewerDragged && viewerStage.value) {
+    (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+    viewerStage.value.scrollLeft = gesture.left - dx;
+    viewerStage.value.scrollTop = gesture.top - dy;
+  }
+}
+function endViewerGesture(event: PointerEvent) {
+  const gesture = viewerGesture;
+  viewerGesture = null;
+  if (!gesture || gesture.id !== event.pointerId) return;
+  const dx = event.clientX - gesture.x;
+  const dy = event.clientY - gesture.y;
+  if (Math.hypot(dx, dy) > 8) viewerDragged = true;
+  const direction = imageSwipeDirection(dx, dy, zoom.value, references.value.length);
+  if (direction) nextImage(direction);
+}
+function cancelViewerGesture() {
+  viewerGesture = null;
+  viewerDragged = true;
+}
+function preventDragClick(event: MouseEvent) {
+  if (viewerDragged && event.detail !== 0) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  viewerDragged = false;
+}
+watch([viewerOpen, viewerIndex], () => {
+  viewerStage.value?.scrollTo({ left: 0, top: 0, behavior: "instant" });
+  viewerGesture = null;
+}, { flush: "post" });
+watch(zoom, async (value, previous) => {
+  const stage = viewerStage.value;
+  if (!stage) return;
+  const left = (stage.scrollLeft + stage.clientWidth / 2) * value / previous - stage.clientWidth / 2;
+  const top = (stage.scrollTop + stage.clientHeight / 2) * value / previous - stage.clientHeight / 2;
+  await nextTick();
+  stage.scrollTo({ left: value === 1 ? 0 : left, top: value === 1 ? 0 : top, behavior: "instant" });
+});
 const viewerImage = computed(() => references.value[viewerIndex.value]);
 function openImage(index: number) {
   viewerIndex.value = index;
@@ -276,10 +361,12 @@ function openImage(index: number) {
   viewerOpen.value = true;
 }
 function nextImage(delta: number) {
+  if (references.value.length < 2) return;
   viewerIndex.value =
     (viewerIndex.value + delta + references.value.length) %
     references.value.length;
   zoom.value = 1;
+  waterIndex.value = waterImages.value.findIndex((item) => item === viewerImage.value);
 }
 function viewerKeys(event: KeyboardEvent) {
   if (event.key === "ArrowRight") {
@@ -365,7 +452,8 @@ const helpOpen = ref(false);
             t(view === "daily" ? "daily" : "atlas")
           }}</strong></span
         >
-        <div class="topbar-actions">
+        <button v-if="isMobile" class="mobile-settings" :aria-label="t('settings')" @click="settingsOpen = true"><Settings2 :size="20" /></button>
+        <div v-else class="topbar-actions">
           <a
             v-if="canEditMaps"
             class="editor-launch"
@@ -474,11 +562,11 @@ const helpOpen = ref(false);
         <div class="section-heading">
           <div>
             <p class="section-kicker">{{ t("dailyKicker") }}</p>
-            <h2 id="daily-heading">
+            <h2 id="daily-heading" tabindex="-1">
               {{ t(followingLive ? "dailyTitle" : "queryTitle")
-              }}<Badge v-if="followingLive" class="live-badge"
+              }}<Badge v-if="followingLive && !isMobile" class="live-badge"
                 ><span class="status-dot" />{{ t("effective") }}</Badge
-              ><Badge v-else variant="outline">{{
+              ><Badge v-else-if="!followingLive" variant="outline">{{
                 formatDate(selectedDate, locale)
               }}</Badge>
             </h2>
@@ -603,7 +691,7 @@ const helpOpen = ref(false);
               {{ t("guideKicker")
               }}<span>/ {{ String(selectedMap).padStart(2, "0") }}</span>
             </p>
-            <h2 id="detail-heading">
+            <h2 id="detail-heading" tabindex="-1">
               {{ mapName(selectedMap)
               }}<span
                 v-if="locale === 'zh-CN'"
@@ -613,12 +701,14 @@ const helpOpen = ref(false);
               >
             </h2>
           </div>
-          <Badge variant="outline" class="map-badge"
+          <button v-if="isMobile" class="detail-map-switch" @click="mapPickerOpen = true"><MapPin :size="15" />{{ t("mobileMaps") }}<ChevronRight :size="14" /></button>
+          <Badge v-else variant="outline" class="map-badge"
             ><MapPin :size="12" />{{
               t("mapNumber", { map: selectedMap })
             }}</Badge
           >
         </div>
+        <div class="detail-controls">
         <div class="detail-toolbar">
           <div class="point-selector">
             <span>{{ t("choosePoint") }}</span
@@ -661,17 +751,18 @@ const helpOpen = ref(false);
           :aria-label="t('referenceType')"
         >
           <button
-            :aria-pressed="referenceView === 'water'"
-            @click="referenceView = 'water'"
-          >
-            <Droplets :size="17" />{{ t("waterTitle") }}
-          </button>
-          <button
             :aria-pressed="referenceView === 'map'"
             @click="referenceView = 'map'"
           >
-            <Ship :size="17" />{{ t("mapTitle") }}
+            <Ship :size="17" /><span>1</span>{{ t("mapTab") }}
           </button>
+          <button
+            :aria-pressed="referenceView === 'water'"
+            @click="referenceView = 'water'"
+          >
+            <Droplets :size="17" /><span>2</span>{{ t("waterTab") }}
+          </button>
+        </div>
         </div>
         <div class="guide-grid" :data-reference="referenceView">
           <article class="water-panel">
@@ -696,6 +787,8 @@ const helpOpen = ref(false);
                 })
               "
               @click="openImage(references.indexOf(waterImage))"
+              @keydown.right.prevent="changeWater(1)"
+              @keydown.left.prevent="changeWater(-1)"
             >
               <img
                 :key="waterImage.url"
@@ -720,7 +813,7 @@ const helpOpen = ref(false);
               <ImageIcon :size="36" /><strong>{{ t("missingWater") }}</strong>
               <p>{{ t("missingWaterHint") }}</p>
             </div>
-            <div class="image-strip">
+            <div v-if="waterImages.length > 1" class="image-strip">
               <button
                 v-if="waterImages.length > 1"
                 class="mobile-image-step"
@@ -784,6 +877,10 @@ const helpOpen = ref(false);
                 :selected="point"
                 @select="manualPoint = $event"
               />
+              <div class="map-actions">
+                <Button variant="outline" @click="mapViewerOpen = true"><Expand :size="14" />{{ t("viewMap") }}</Button>
+                <Button v-if="isMobile" @click="showBait"><Droplets :size="14" />{{ t("viewBait") }}<ArrowRight :size="14" /></Button>
+              </div>
               <div class="boat-map-status">
                 <strong>{{
                   t(boatMarker ? "markerSelected" : "markerPending", { point })
@@ -793,12 +890,6 @@ const helpOpen = ref(false);
                 </p>
                 <p v-if="boatMarker?.note">{{ boatMarker.note }}</p>
               </div>
-              <Button
-                variant="outline"
-                class="boat-map-expand"
-                @click="mapViewerOpen = true"
-                ><Expand :size="14" />{{ t("viewMap") }}</Button
-              >
             </article>
             <article class="fishing-note">
               <div class="note-heading">
@@ -839,6 +930,7 @@ const helpOpen = ref(false);
         <Compass :size="19" /><span>{{ t("mobileTodaySpot") }}</span>
       </button>
     </nav>
+    <PreferencesDialog v-model:open="settingsOpen" v-model:theme="themePreference" @help="helpOpen = true" />
     <Dialog v-model:open="mapViewerOpen">
       <DialogContent class="boat-map-dialog">
         <DialogHeader
@@ -882,7 +974,7 @@ const helpOpen = ref(false);
             }}</span>
             <strong>{{ mapName(item.id) }}</strong>
             <span class="picker-point"
-              >{{ t("pointLabel", { point: code[item.id - 1] })
+              >{{ t("pointLabel", { point: selectedMap === item.id ? point : code[item.id - 1] })
               }}<ArrowRight :size="15"
             /></span>
           </button>
@@ -904,10 +996,21 @@ const helpOpen = ref(false);
             t("viewerWaterDescription", { index: viewerImage?.index ?? 1 })
           }}</DialogDescription></DialogHeader
         >
-        <div class="viewer-stage">
+        <div
+          class="viewer-frame"
+          :class="{ 'is-zoomed': zoom > 1 }"
+          @pointerdown="startViewerGesture"
+          @pointermove="moveViewerGesture"
+          @pointerup="endViewerGesture"
+          @pointercancel="cancelViewerGesture"
+          @pointerleave="cancelViewerGesture"
+          @click.capture="preventDragClick"
+        >
+        <div ref="viewerStage" class="viewer-stage">
           <img
             v-if="viewerImage"
             :src="viewerImage.url"
+            draggable="false"
             :alt="
               t('waterAlt', {
                 name: mapName(selectedMap),
@@ -917,29 +1020,19 @@ const helpOpen = ref(false);
             "
             :style="{
               width: `${zoom * 100}%`,
-              height: isMobile ? 'auto' : `${zoom * 60}dvh`,
+              height: `${zoom * 100}%`,
               maxWidth: 'none',
             }"
           />
         </div>
+        <template v-if="references.length > 1">
+          <button class="viewer-edge viewer-edge-previous" :aria-label="t('previousImage')" :title="t('previousImage')" @click="nextImage(-1)"><span><ChevronLeft :size="28" /></span></button>
+          <button class="viewer-edge viewer-edge-next" :aria-label="t('nextImage')" :title="t('nextImage')" @click="nextImage(1)"><span><ChevronRight :size="28" /></span></button>
+        </template>
+        </div>
         <div class="viewer-toolbar">
-          <div>
-            <Button
-              variant="outline"
-              size="icon"
-              :aria-label="t('previousImage')"
-              :disabled="references.length < 2"
-              @click="nextImage(-1)"
-              ><ChevronLeft /></Button
-            ><span>{{ viewerIndex + 1 }} / {{ references.length }}</span
-            ><Button
-              variant="outline"
-              size="icon"
-              :aria-label="t('nextImage')"
-              :disabled="references.length < 2"
-              @click="nextImage(1)"
-              ><ChevronRight
-            /></Button>
+          <div class="viewer-progress">
+            <span role="status" aria-live="polite" aria-atomic="true">{{ viewerIndex + 1 }} / {{ references.length }}</span>
           </div>
           <div>
             <Button
@@ -972,6 +1065,7 @@ const helpOpen = ref(false);
             ></Button>
           </div>
         </div>
+        <p class="viewer-hint">{{ t(zoom > 1 ? 'viewerPanHint' : references.length > 1 ? (isMobile ? 'viewerSwipeHint' : 'viewerNavigationHint') : 'viewerSingleHint') }}</p>
       </DialogContent>
     </Dialog>
     <Dialog v-model:open="copyOpen"
@@ -1027,13 +1121,6 @@ const helpOpen = ref(false);
           </div>
         </div>
         <p class="help-disclaimer">{{ t("helpDataNote") }}</p>
-        <nav class="help-sources" :aria-label="t('helpSources')">
-          <span>{{ t("helpSources") }}</span>
-          <a href="https://creatures-of-the-deep-app.fandom.com/wiki/Baits" target="_blank" rel="noopener noreferrer">{{ t("helpSourceBaits") }}</a>
-          <a href="https://creatures-of-the-deep-app.fandom.com/wiki/Fishing_guide" target="_blank" rel="noopener noreferrer">{{ t("helpSourceFishing") }}</a>
-          <a href="https://creatures-of-the-deep-app.fandom.com/wiki/Nessie" target="_blank" rel="noopener noreferrer">{{ t("helpSourceNessie") }}</a>
-          <a href="https://creatures-of-the-deep-app.fandom.com/wiki/Bessie" target="_blank" rel="noopener noreferrer">{{ t("helpSourceSchedule") }}</a>
-        </nav>
       </DialogContent></Dialog
     >
   </div>
