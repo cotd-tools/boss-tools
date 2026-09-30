@@ -8,10 +8,12 @@ import {
   Anchor,
   ArrowDownToLine,
   ArrowRight,
+  ArrowLeft,
   BookOpen,
   Check,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Clock3,
   Compass,
   Copy,
@@ -22,8 +24,8 @@ import {
   ImageIcon,
   Info,
   Languages,
-  LayoutGrid,
   MapPin,
+  Map as MapIcon,
   Monitor,
   Moon,
   Navigation,
@@ -53,6 +55,7 @@ import {
 } from "@/components/ui/dialog";
 import { maps, images, baseMaps, pointsFor, referencesFor } from "@/lib/maps";
 import BoatMap from "@/components/BoatMap.vue";
+import BoatMapPreview from "@/components/BoatMapPreview.vue";
 import PreferencesDialog from "@/components/PreferencesDialog.vue";
 import locationData from "@/data/boat-locations.json";
 import { confirmedMarkers, validateLocations } from "@/lib/boat-locations";
@@ -77,7 +80,7 @@ const locations = validateLocations(locationData);
 const mapViewerOpen = ref(false);
 const isMobile = useMediaQuery("(max-width: 760px)");
 const mapPickerOpen = ref(false);
-const referenceView = ref("map");
+const referenceView = ref("water");
 const settingsOpen = ref(false);
 const { preference: themePreference } = useTheme();
 const themeIcons = { system: Monitor, light: Sun, dark: Moon };
@@ -87,7 +90,6 @@ const themeLabels = {
   dark: "themeDark",
 };
 const mapName = (id: number) => t(`map${id}`);
-const englishMapName = (id: number) => t(`map${id}`, {}, { locale: "en" });
 const regionName = computed(() =>
   t(region.value === "us_ca" ? "regionNorthAmerica" : "regionOther"),
 );
@@ -124,6 +126,10 @@ const map = computed(() => maps.find((item) => item.id === selectedMap.value)!);
 const activePoint = computed(() => Number(code.value[selectedMap.value - 1]));
 const manualPoint = ref<number | null>(null);
 const point = computed(() => manualPoint.value ?? activePoint.value);
+const detailContext = computed(() => t(point.value === activePoint.value ? "guideDatePoint" : "browsingPoint", {
+  date: followingLive.value ? t("today") : formatDate(selectedDate.value, locale.value),
+  point: point.value,
+}));
 const references = computed(() =>
   referencesFor(selectedMap.value, point.value),
 );
@@ -209,40 +215,24 @@ function selectMap(id: number) {
   if (selectedMap.value === id) return;
   selectedMap.value = id;
   manualPoint.value = null;
-  referenceView.value = "map";
+  referenceView.value = "water";
 }
 async function showDetail(id: number, preserveSelection = false) {
   selectMap(id);
   if (!preserveSelection) {
     manualPoint.value = null;
-    referenceView.value = "map";
+    referenceView.value = "water";
   }
-  if (isMobile.value) {
-    view.value = "atlas";
-    await nextTick();
-    window.scrollTo({ top: 0, behavior: "instant" });
-    document.getElementById("detail-heading")?.focus({ preventScroll: true });
-    return;
-  }
-  document.getElementById("location-detail")?.scrollIntoView({
-    behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-      ? "instant"
-      : "smooth",
-    block: "start",
-  });
+  view.value = "atlas";
+  await nextTick();
+  window.scrollTo({ top: 0, behavior: "instant" });
+  document.getElementById("detail-heading")?.focus({ preventScroll: true });
 }
 async function showOverview() {
   view.value = "daily";
   await nextTick();
   window.scrollTo({ top: 0, behavior: "instant" });
   document.getElementById("daily-heading")?.focus({ preventScroll: true });
-}
-function showTodaySpot() {
-  quickDate(0);
-  if (view.value === "atlas") {
-    referenceView.value = "map";
-    showDetail(selectedMap.value);
-  }
 }
 function chooseMobileMap(id: number) {
   mapPickerOpen.value = false;
@@ -375,7 +365,7 @@ const helpOpen = ref(false);
 </script>
 
 <template>
-  <div class="app-shell" :data-locale="locale" :data-view="view">
+  <div class="app-shell field-guide" :data-locale="locale" :data-view="view">
     <aside class="sidebar">
       <a
         class="brand"
@@ -394,10 +384,10 @@ const helpOpen = ref(false);
       </a>
       <div class="sidebar-label">{{ t("tools") }} <span>01 — 08</span></div>
       <nav class="primary-nav" :aria-label="t('mainNav')">
-        <button :class="{ selected: view === 'daily' }" @click="view = 'daily'">
+        <button :class="{ selected: view === 'daily' }" @click="showOverview">
           <Compass :size="18" />{{ t("daily") }}<ArrowRight :size="15" />
         </button>
-        <button :class="{ selected: view === 'atlas' }" @click="view = 'atlas'">
+        <button :class="{ selected: view === 'atlas' }" @click="showDetail(selectedMap, true)">
           <BookOpen :size="18" />{{ t("atlas")
           }}<Badge variant="secondary">{{ images.length }}</Badge>
         </button>
@@ -411,7 +401,7 @@ const helpOpen = ref(false);
           :key="item.id"
           :class="{ selected: selectedMap === item.id }"
           :aria-current="selectedMap === item.id ? 'true' : undefined"
-          @click="selectMap(item.id)"
+          @click="showDetail(item.id, true)"
         >
           <span class="map-number">{{ String(item.id).padStart(2, "0") }}</span
           ><span>{{ mapName(item.id) }}</span
@@ -433,6 +423,9 @@ const helpOpen = ref(false);
     </aside>
     <main class="main-content">
       <header class="topbar">
+        <button v-if="isMobile && view === 'atlas'" class="guide-back" @click="showOverview" :aria-label="t('mobileOverview')">
+          <ArrowLeft :size="20" /><span>{{ t('dailyTitle') }}</span>
+        </button>
         <button
           class="mobile-brand"
           :aria-label="t('mobileOverview')"
@@ -510,43 +503,10 @@ const helpOpen = ref(false);
           </button>
         </div>
       </header>
-      <section class="hero">
-        <div class="contours" aria-hidden="true">
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-          <div />
-        </div>
-        <div class="hero-content">
-          <p class="eyebrow"><span /> CREATURES OF THE DEEP</p>
-          <h1>{{ t("heroTitle") }}</h1>
-          <p class="hero-description">{{ t("heroDescription") }}</p>
-          <div class="hero-tags">
-            <span><MapPin :size="14" />{{ t("mapCount", maps.length) }}</span
-            ><span
-              ><ImageIcon :size="14" />{{
-                t("referenceCount", images.length)
-              }}</span
-            >
-          </div>
-        </div>
-        <div class="reset-card">
-          <div class="reset-label">
-            <span class="status-dot" />{{
-              t("activeDate", { date: formatDate(live, locale) })
-            }}
-          </div>
-          <div class="reset-caption">{{ t("nextReset") }}</div>
-          <div class="countdown">{{ countdown }}</div>
-          <div class="reset-region">
-            <Globe2 :size="13" />{{ regionName }} · {{ resetHour }}:00<span>{{
-              t("deviceTime")
-            }}</span>
-          </div>
-        </div>
-      </section>
+      <div v-if="view === 'daily'" class="daily-intro">
+        <p>{{ t('heroDescription') }}</p>
+        <span><Clock3 :size="14" />{{ t('nextReset') }} <strong>{{ countdown }}</strong></span>
+      </div>
       <section
         v-if="view === 'daily'"
         class="daily-section"
@@ -673,33 +633,18 @@ const helpOpen = ref(false);
         <p class="date-hint"><Clock3 :size="13" />{{ t("dateHint") }}</p>
       </section>
       <section
-        v-if="!isMobile || view === 'atlas'"
+        v-if="view === 'atlas'"
         id="location-detail"
         class="detail-section"
         aria-labelledby="detail-heading"
       >
-        <div class="section-heading detail-heading">
-          <div>
-            <p class="section-kicker">
-              {{ t("guideKicker")
-              }}<span>/ {{ String(selectedMap).padStart(2, "0") }}</span>
-            </p>
-            <h2 id="detail-heading" tabindex="-1">
-              {{ mapName(selectedMap)
-              }}<span
-                v-if="locale === 'zh-CN'"
-                class="english-name"
-                lang="en"
-                >{{ englishMapName(selectedMap) }}</span
-              >
-            </h2>
-          </div>
-          <button v-if="isMobile" class="detail-map-switch" @click="mapPickerOpen = true"><MapPin :size="15" />{{ t("mobileMaps") }}<ChevronRight :size="14" /></button>
-          <Badge v-else variant="outline" class="map-badge"
-            ><MapPin :size="12" />{{
-              t("mapNumber", { map: selectedMap })
-            }}</Badge
-          >
+        <div class="guide-heading">
+          <h1 id="detail-heading" tabindex="-1">
+            <button class="guide-destination" :aria-label="t('selectDestination', { name: mapName(selectedMap) })" aria-haspopup="dialog" @click="mapPickerOpen = true">
+              <MapPin :size="23" /><span>{{ mapName(selectedMap) }}</span><ChevronDown :size="20" />
+            </button>
+          </h1>
+          <div class="guide-context"><span>{{ t('mapNumber', { map: String(selectedMap).padStart(2, '0') }) }}</span><span>{{ detailContext }}</span></div>
         </div>
         <div class="detail-controls">
         <div class="detail-toolbar">
@@ -729,46 +674,19 @@ const helpOpen = ref(false);
               t("returnPoint", { point: activePoint })
             }}
           </button>
-          <span v-else class="point-context"
-            ><span class="tiny-dot" />{{
-              t("pointContext", {
-                date: formatDate(selectedDate, locale),
-                point,
-              })
-            }}</span
-          >
         </div>
-        <div
-          class="mobile-reference-switch"
-          role="group"
-          :aria-label="t('referenceType')"
-        >
-          <button
-            :aria-pressed="referenceView === 'map'"
-            @click="referenceView = 'map'"
-          >
-            <Ship :size="17" /><span>1</span>{{ t("mapTab") }}
+        <div class="guide-tabs" role="group" :aria-label="t('referenceType')">
+          <button :aria-pressed="referenceView === 'water'" @click="referenceView = 'water'">
+            <ImageIcon :size="20" />{{ t('waterTab') }}
           </button>
-          <button
-            :aria-pressed="referenceView === 'water'"
-            @click="referenceView = 'water'"
-          >
-            <Droplets :size="17" /><span>2</span>{{ t("waterTab") }}
+          <button :aria-pressed="referenceView === 'map'" @click="referenceView = 'map'">
+            <MapIcon :size="20" />{{ t('mapTab') }}
           </button>
         </div>
         </div>
         <div class="guide-grid" :data-reference="referenceView">
-          <article class="water-panel">
-            <div class="panel-title">
-              <div>
-                <span class="step-number">02</span>
-                <h3>{{ t("waterTitle") }}</h3>
-                <Badge variant="secondary">{{
-                  t("photoCount", waterImages.length)
-                }}</Badge>
-              </div>
-              <span>{{ t("waitBubbles") }}</span>
-            </div>
+          <article v-show="referenceView === 'water'" class="water-panel">
+            <div class="panel-title"><h2>{{ t('waterTitle') }}</h2><span>{{ t('photoCount', waterImages.length) }}</span></div>
             <button
               v-if="waterImage"
               class="reference-stage"
@@ -794,67 +712,32 @@ const helpOpen = ref(false);
                   })
                 "
               />
-              <span class="image-tag"
-                ><Droplets :size="13" />{{
-                  t("waterPosition", { index: waterImage.index })
-                }}</span
-              ><span class="expand-label"
-                ><Expand :size="14" />{{ t("enlarge") }}</span
-              >
+              <span class="guide-expand" aria-hidden="true"><Expand :size="22" /></span>
             </button>
             <div v-else class="no-water">
               <ImageIcon :size="36" /><strong>{{ t("missingWater") }}</strong>
               <p>{{ t("missingWaterHint") }}</p>
             </div>
-            <div v-if="waterImages.length > 1" class="image-strip">
-              <button
-                v-if="waterImages.length > 1"
-                class="mobile-image-step"
-                :aria-label="t('previousImage')"
-                @click="changeWater(-1)"
-              >
-                <ChevronLeft :size="18" />
-              </button>
-              <div ref="thumbnailList" class="thumbnail-list">
-                <button
-                  v-for="(item, index) in waterImages"
-                  :key="item.filename"
-                  :class="{ active: waterIndex === index }"
-                  :aria-label="t('switchWater', { index: item.index })"
-                  :aria-pressed="waterIndex === index"
-                  @click="waterIndex = index"
-                >
-                  <img :src="item.url" alt="" loading="lazy" /><span>{{
-                    item.index
-                  }}</span>
-                </button>
-              </div>
-              <span
-                >{{ waterImages.length ? waterIndex + 1 : 0 }} /
-                {{ waterImages.length
-                }}<small>{{ t("placementReference") }}</small></span
-              >
-              <button
-                v-if="waterImages.length > 1"
-                class="mobile-image-step"
-                :aria-label="t('nextImage')"
-                @click="changeWater(1)"
-              >
-                <ChevronRight :size="18" />
+            <div v-if="waterImages.length > 1" class="photo-navigation">
+              <Button variant="outline" :aria-label="t('previousImage')" @click="changeWater(-1)"><ArrowLeft :size="19" />{{ t('viewerPrevious') }}</Button>
+              <span role="status" aria-live="polite" aria-atomic="true">{{ waterIndex + 1 }} / {{ waterImages.length }}</span>
+              <Button :aria-label="t('nextImage')" @click="changeWater(1)">{{ t('viewerNext') }}<ArrowRight :size="19" /></Button>
+            </div>
+            <div v-if="waterImages.length > 1" ref="thumbnailList" class="photo-thumbnails" :aria-label="t('placementReference')">
+              <button v-for="(item, index) in waterImages" :key="item.filename"
+                :class="{ active: waterIndex === index }" :aria-label="t('switchWater', { index: item.index })"
+                :aria-pressed="waterIndex === index" @click="waterIndex = index">
+                <img :src="item.url" alt="" loading="lazy" /><span>{{ item.index }}</span>
               </button>
             </div>
-            <div class="image-footnote">
-              <Info :size="14" /><i18n-t
-                keypath="waterHint"
-                tag="p"
-                scope="global"
-                ><template #area
-                  ><strong>{{ t("approximateArea") }}</strong></template
-                ></i18n-t
-              >
-            </div>
+            <p class="guide-photo-hint"><Info :size="17" />{{ t('photoInstruction') }}</p>
+            <button class="map-summary" @click="referenceView = 'map'" :aria-label="t('viewBoatPosition')">
+              <BoatMapPreview :src="baseMap.url" :markers="boatMarkers" :selected="point" />
+              <span class="map-summary-copy"><strong><MapPin :size="20" />{{ t('mapTitle') }}</strong><span>{{ t(boatMarker ? 'mapPreviewHint' : 'markerPendingHint') }}</span></span>
+              <ChevronRight :size="20" />
+            </button>
           </article>
-          <aside class="location-side">
+          <aside v-show="referenceView === 'map'" class="location-side">
             <article class="map-panel">
               <div class="panel-title">
                 <div>
@@ -872,7 +755,7 @@ const helpOpen = ref(false);
               />
               <div class="map-actions">
                 <Button variant="outline" @click="mapViewerOpen = true"><Expand :size="14" />{{ t("viewMap") }}</Button>
-                <Button v-if="isMobile" @click="showBait"><Droplets :size="14" />{{ t("viewBait") }}<ArrowRight :size="14" /></Button>
+                <Button @click="showBait"><Droplets :size="14" />{{ t("viewBait") }}<ArrowRight :size="14" /></Button>
               </div>
               <div class="boat-map-status">
                 <strong>{{
@@ -910,17 +793,11 @@ const helpOpen = ref(false);
       </footer>
     </main>
     <nav class="mobile-dock" :aria-label="t('mainNav')">
-      <button
-        :aria-current="view === 'daily' ? 'page' : undefined"
-        @click="showOverview"
-      >
-        <LayoutGrid :size="19" /><span>{{ t("mobileOverview") }}</span>
+      <button :aria-current="view === 'daily' ? 'page' : undefined" @click="showOverview">
+        <MapPin :size="23" /><span>{{ t('dailyTitle') }}</span>
       </button>
-      <button @click="mapPickerOpen = true" aria-haspopup="dialog">
-        <MapPin :size="19" /><span>{{ t("mobileMaps") }}</span>
-      </button>
-      <button @click="showTodaySpot">
-        <Compass :size="19" /><span>{{ t("mobileTodaySpot") }}</span>
+      <button :aria-current="view === 'atlas' ? 'page' : undefined" @click="showDetail(selectedMap, true)">
+        <BookOpen :size="23" /><span>{{ t('atlas') }}</span>
       </button>
     </nav>
     <PreferencesDialog v-model:open="settingsOpen" v-model:theme="themePreference" @help="helpOpen = true" />

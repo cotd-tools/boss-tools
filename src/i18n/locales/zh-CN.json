@@ -186,5 +186,11 @@
   "waterTab": "投饵实景",
   "viewBait": "查看投饵图",
   "settings": "设置与帮助",
-  "settingsDescription": "按你的习惯调整外观和语言。"
+  "settingsDescription": "按你的习惯调整外观和语言。",
+  "guideDatePoint": "{date} · {point} 号点位",
+  "browsingPoint": "浏览 · {point} 号点位",
+  "selectDestination": "切换地图，当前为{name}",
+  "photoInstruction": "先投放怪物诱饵，出现气泡后向冒泡处抛竿。",
+  "viewBoatPosition": "查看停船位置",
+  "mapPreviewHint": "对照地图确认位置"
 }
