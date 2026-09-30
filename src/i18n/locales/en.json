@@ -186,5 +186,11 @@
   "waterTab": "Bait photos",
   "viewBait": "View bait photos",
   "settings": "Settings & help",
-  "settingsDescription": "Choose your preferred appearance and language."
+  "settingsDescription": "Choose your preferred appearance and language.",
+  "guideDatePoint": "{date} · Spot {point}",
+  "browsingPoint": "Viewing · Spot {point}",
+  "selectDestination": "Change map, currently {name}",
+  "photoInstruction": "Cast Monster Bait, then cast your line where bubbles appear.",
+  "viewBoatPosition": "View boat position",
+  "mapPreviewHint": "Check your position on the map"
 }
