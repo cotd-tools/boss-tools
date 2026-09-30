@@ -1296,6 +1296,8 @@ footer > span {
 .viewer-frame.is-zoomed { touch-action: auto; }
 .viewer-stage {
   overflow: auto;
+  /* Apply at the scrolling element: its parent's touch-action is not sufficient. */
+  touch-action: pan-y pinch-zoom;
   height: 60dvh;
   max-height: 60dvh;
   background: #101e1b;
@@ -1309,7 +1311,7 @@ footer > span {
   user-select: none;
   -webkit-user-drag: none;
 }
-.viewer-frame.is-zoomed .viewer-stage { cursor: grab; }
+.viewer-frame.is-zoomed .viewer-stage { cursor: grab; touch-action: auto; }
 .viewer-frame.is-zoomed .viewer-stage:active { cursor: grabbing; }
 .viewer-edge {
   position: absolute;
@@ -1322,6 +1324,7 @@ footer > span {
   color: white;
   z-index: 2;
   cursor: pointer;
+  touch-action: pan-y pinch-zoom;
 }
 .viewer-edge-previous { left: 0; justify-content: flex-start; }
 .viewer-edge-next { right: 0; justify-content: flex-end; }
