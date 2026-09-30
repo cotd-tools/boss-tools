@@ -25,18 +25,26 @@ npm run preview
 
 ## 部署到 GitHub Pages
 
-1. 将此目录的源代码（包括 `images/`、`package-lock.json`、`.github/`）上传到 GitHub 仓库；使用 `dev` 分支验证改动，`main` 分支发布网站。不要上传 `node_modules/` 和 `dist/`。
+1. 将此目录的源代码（包括 `images/`、`package-lock.json`、`.github/`）上传到 GitHub 仓库；使用 `dev` 分支验证改动，将准备发布的代码通过 PR 合并到 `main`。不要上传 `node_modules/` 和 `dist/`。
 2. 在仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
-3. 合并代码到对应分支，或在 **Actions → Test and Deploy → Run workflow** 选择分支后手动运行。
+3. `main` 的 `CI` 通过后，为其提交创建 `v1.2.3` 格式的版本标签，并在 GitHub 发布对应的正式 Release。
 4. 工作流成功后，Pages 设置页会显示网站地址。
 
-工作流按分支执行：
+推荐流程：功能分支 → PR 到 `dev` → PR 从 `dev` 到 `main` → 版本标签 → 正式 Release → 自动发布。
 
-- 合并到 `dev`：运行 `npm test`，不构建或发布 Pages。
-- 合并到 `main`：先运行 `npm test`；通过后运行 `npm run build`，成功后发布 `dist/`。测试或构建失败均不会发布。
-- 使用分支 `push` 事件覆盖普通合并、Squash 和 Rebase；直接推送到这两个分支也会触发对应流程。其他分支与标签不自动触发。
-- 手动运行时，只有选择 `main` 才会构建和发布；选择其他分支仅运行测试。
-- `dev` 与 `main` 的任务互不取消。同一 `dev` 分支的新任务会取消旧测试；`main` 正在执行的发布会完成后再处理后续任务。
+| 触发场景 | 自动检查 | 发布 Pages |
+| --- | --- | --- |
+| PR 目标为 `dev` / `main`：创建、追加提交、重新打开、转为待评审 | 测试＋类型检查＋生产构建 | 否 |
+| 合并或推送到 `dev` | 同上 | 否 |
+| 合并或推送到 `main` | 同上 | 否 |
+| 合并队列检查（启用队列时） | 同上 | 否 |
+| 手动运行 CI | 同上 | 否 |
+| 只推送标签 / 草稿 Release / 预发布 Release | 不触发正式发布流程 | 否 |
+| 发布正式 Release | 验证版本标签、提交已进入 `main`，再测试和构建 | 全部通过后发布 |
+
+检查名称固定为 **`CI`**。本仓库已启用 `main` 保护；[protect-main.json](.github/rulesets/protect-main.json) 保留规则配置，供其他仓库导入复用，修改文件不会自动同步远程规则。PR（包括草稿）验证 GitHub 生成的合并结果；正式发布固定到 Release 事件的提交 SHA，部署本次检查生成的 `dist/`。
+
+PR、`dev`、`main` 检查按引用隔离；新提交取消相同引用的旧检查。正式发布使用独立并发组，正在执行的发布不被中断。Pages 环境须允许 `v*` **标签**部署，不能仅允许 `main` 分支。完整设置、版本发布命令和回退步骤见 [CI/CD 流程](docs/CICD.md)。
 
 Vite 使用相对资源路径 `base: './'`，支持仓库子路径、根路径和自定义域名。本项目没有依赖服务器重写的路由。
 
@@ -57,7 +65,7 @@ Vite 使用相对资源路径 `base: './'`，支持仓库子路径、根路径�
 - 序号按数字排序（`2` 在 `10` 前）；可有间隔。
 - 未确认停船坐标的点位会显示底图和“待确认”提示，不会生成猜测的标记。
 - 缩略图可以裁切；主要参考图和放大视图完整展示图片，避免丢失位置线索。
-- 图片在构建时自动发现。新增原图后先运行压缩命令，再提交 `images/` 内的生成图片和 `optimization-report.json`，合并到 `main` 后由 Actions 重新发布。CI 测试与构建不依赖原图目录。
+- 图片在构建时自动发现。新增原图后先运行压缩命令，再提交 `images/` 内的生成图片和 `optimization-report.json`，合并到 `main` 并发布正式 Release 后由 Actions 更新网站。CI 测试与构建不依赖原图目录。
 - 新增已知地图的新点位时，点位按钮会自动出现；**图片本身不会修改每日轮换数据**。
 
 地图编号：1 天堂岛、2 北美五大湖、3 哥斯达黎加、4 阿拉斯加、5 澳大利亚、6 苏格兰、7 泰国、8 亚马逊。
@@ -103,7 +111,7 @@ npm test
 npm run build
 ```
 
-检查后提交坐标 JSON；新增或替换底图时一并提交生成图片、`images/optimization-report.json` 与目录配置。合并到 `dev` 后由 GitHub Actions 测试，合并到 `main` 后测试、构建并发布。**保存到项目、导出备份都不会自动推送或发布网站。**
+检查后提交坐标 JSON；新增或替换底图时一并提交生成图片、`images/optimization-report.json` 与目录配置。PR 与 `dev` / `main` 更新均会运行检查；合并到 `main` 后创建版本标签并发布正式 Release，才会更新网站。**保存到项目、导出备份都不会自动推送或发布网站。**
 
 ### 草稿、冲突与恢复
 
@@ -168,7 +176,9 @@ npm run images:optimize -- --format=webp
 - `src/components/ui/`：由官方 shadcn-vue CLI 生成的组件，可用 `npx shadcn-vue@latest add ...` 扩展。
 - `src/style.css`：主题、响应式布局与无障碍动效偏好。
 - `src/mobile.css`：手机总览、底部导航、参考图切换与触控布局。
-- `.github/workflows/deploy.yml`：`dev` 自动测试，`main` 测试通过后构建并发布 Pages。
+- `.github/workflows/deploy.yml`：PR 与 `dev` / `main` 自动测试和构建。
+- `.github/workflows/release.yml`：正式 Release 验证、构建并发布 Pages。
+- `.github/rulesets/protect-main.json`：可导入 GitHub 的主分支保护规则。
 - `tests/`：周期回归、刷新边界、图片覆盖及翻译完整性验证。
 
 ## 语言与文案维护
