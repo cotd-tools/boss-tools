@@ -56,7 +56,7 @@ import BoatMap from "@/components/BoatMap.vue";
 import PreferencesDialog from "@/components/PreferencesDialog.vue";
 import locationData from "@/data/boat-locations.json";
 import { confirmedMarkers, validateLocations } from "@/lib/boat-locations";
-import { imageSwipeDirection } from "@/lib/image-gestures";
+import { createImageGestureTracker, imageSwipeDirection } from "@/lib/image-gestures";
 import {
   bossCode,
   dateKey,
@@ -292,59 +292,52 @@ const viewerOpen = ref(false);
 const viewerIndex = ref(0);
 const zoom = ref(1);
 const viewerStage = ref<HTMLElement | null>(null);
-let viewerGesture: { id: number; x: number; y: number; left: number; top: number; pan: boolean } | null = null;
-let viewerDragged = false;
+const viewerGesture = createImageGestureTracker();
 function startViewerGesture(event: PointerEvent) {
-  viewerDragged = false;
   if (!event.isPrimary || event.button !== 0) {
-    viewerGesture = null;
+    viewerGesture.start(null);
     return;
   }
-  viewerGesture = {
+  viewerGesture.start({
     id: event.pointerId,
     x: event.clientX,
     y: event.clientY,
     left: viewerStage.value?.scrollLeft ?? 0,
     top: viewerStage.value?.scrollTop ?? 0,
     pan: zoom.value > 1 && event.pointerType === "mouse" && !(event.target as HTMLElement).closest("button"),
-  };
+  });
+  // Keep a swipe alive outside the frame, without retargeting a button's click.
+  const target = (event.target as Element).closest("button") ?? (event.currentTarget as HTMLElement);
+  target.setPointerCapture(event.pointerId);
 }
 function moveViewerGesture(event: PointerEvent) {
-  const gesture = viewerGesture;
-  if (!gesture || gesture.id !== event.pointerId) return;
-  const dx = event.clientX - gesture.x;
-  const dy = event.clientY - gesture.y;
-  if (Math.hypot(dx, dy) > 8) viewerDragged = true;
-  if (gesture.pan && viewerDragged && viewerStage.value) {
-    (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+  const movement = viewerGesture.move(event.pointerId, event.clientX, event.clientY);
+  if (!movement) return;
+  const { gesture, dx, dy } = movement;
+  if (gesture.pan && viewerStage.value) {
     viewerStage.value.scrollLeft = gesture.left - dx;
     viewerStage.value.scrollTop = gesture.top - dy;
   }
 }
 function endViewerGesture(event: PointerEvent) {
-  const gesture = viewerGesture;
-  viewerGesture = null;
-  if (!gesture || gesture.id !== event.pointerId) return;
-  const dx = event.clientX - gesture.x;
-  const dy = event.clientY - gesture.y;
-  if (Math.hypot(dx, dy) > 8) viewerDragged = true;
+  const movement = viewerGesture.end(event.pointerId, event.clientX, event.clientY);
+  if (!movement) return;
+  const { dx, dy } = movement;
   const direction = imageSwipeDirection(dx, dy, zoom.value, references.value.length);
   if (direction) nextImage(direction);
 }
-function cancelViewerGesture() {
-  viewerGesture = null;
-  viewerDragged = true;
+function cancelViewerGesture(event: PointerEvent) {
+  viewerGesture.cancel(event.pointerId);
 }
 function preventDragClick(event: MouseEvent) {
-  if (viewerDragged && event.detail !== 0) {
+  if (viewerGesture.consumeClick(event.detail)) {
     event.preventDefault();
     event.stopPropagation();
   }
-  viewerDragged = false;
 }
 watch([viewerOpen, viewerIndex], () => {
   viewerStage.value?.scrollTo({ left: 0, top: 0, behavior: "instant" });
-  viewerGesture = null;
+  viewerGesture.reset();
 }, { flush: "post" });
 watch(zoom, async (value, previous) => {
   const stage = viewerStage.value;
@@ -1003,7 +996,7 @@ const helpOpen = ref(false);
           @pointermove="moveViewerGesture"
           @pointerup="endViewerGesture"
           @pointercancel="cancelViewerGesture"
-          @pointerleave="cancelViewerGesture"
+          @lostpointercapture="cancelViewerGesture"
           @click.capture="preventDragClick"
         >
         <div ref="viewerStage" class="viewer-stage">
@@ -1030,8 +1023,13 @@ const helpOpen = ref(false);
           <button class="viewer-edge viewer-edge-next" :aria-label="t('nextImage')" :title="t('nextImage')" @click="nextImage(1)"><span><ChevronRight :size="28" /></span></button>
         </template>
         </div>
+        <div v-if="isMobile && references.length > 1" class="viewer-navigation">
+          <Button variant="outline" :aria-label="t('previousImage')" @click="nextImage(-1)"><ChevronLeft />{{ t('viewerPrevious') }}</Button>
+          <span role="status" aria-live="polite" aria-atomic="true">{{ viewerIndex + 1 }} / {{ references.length }}</span>
+          <Button variant="outline" :aria-label="t('nextImage')" @click="nextImage(1)">{{ t('viewerNext') }}<ChevronRight /></Button>
+        </div>
         <div class="viewer-toolbar">
-          <div class="viewer-progress">
+          <div v-if="!isMobile || references.length < 2" class="viewer-progress">
             <span role="status" aria-live="polite" aria-atomic="true">{{ viewerIndex + 1 }} / {{ references.length }}</span>
           </div>
           <div>

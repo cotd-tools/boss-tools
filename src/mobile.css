@@ -470,9 +470,18 @@
     padding: 18px 12px;
   }
   .image-dialog .viewer-stage { height: min(52dvh, calc((100vw - 56px) * 0.75)); max-height: 52dvh; }
-  .viewer-edge { width: 20%; padding: 4px; }
+  .viewer-edge { width: 24%; min-width: 48px; padding: 4px; }
   .viewer-edge span { width: 40px; height: 48px; border-radius: 10px; }
   .viewer-frame.is-zoomed .viewer-edge { width: 48px; }
+  .viewer-navigation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 10px;
+  }
+  .viewer-navigation button { min-height: 48px; padding: 0 10px; touch-action: manipulation; }
+  .viewer-navigation span { min-width: 42px; text-align: center; font-variant-numeric: tabular-nums; color: var(--text-secondary); font-size: 13px; }
+  .viewer-toolbar > div:only-child { margin-left: auto; }
   .viewer-toolbar button,
   .viewer-toolbar a,
   .viewer-toolbar .zoom-reset {
