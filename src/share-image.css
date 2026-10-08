@@ -1,0 +1,49 @@
+.daily-share-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.daily-share-actions .copy-button,
+.daily-share-actions .share-image-button {
+  height: 40px;
+  border-radius: 8px;
+  font-size: 12px;
+  gap: 6px;
+}
+.share-image-dialog[data-slot="dialog-content"] {
+  width: min(640px, calc(100% - 32px));
+  max-width: 640px;
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+}
+.share-image-preview {
+  min-width: 0;
+  max-height: 58dvh;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 0;
+  background: #fafaf7;
+}
+.share-image-preview img { display: block; width: 100%; height: auto; }
+.share-image-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.share-image-actions [data-slot="button"] { min-height: 44px; }
+.share-image-spinner { animation: share-image-spin 1s linear infinite; }
+@keyframes share-image-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .share-image-spinner { animation: none; }
+}
+@media (max-width: 600px) {
+  .field-guide .daily-section .section-heading { align-items: flex-start; flex-wrap: wrap; }
+  .daily-share-actions { width: 100%; }
+  :root .app-shell .daily-share-actions .copy-button,
+  .daily-share-actions .share-image-button {
+    flex: 1;
+    height: 44px;
+    margin: 0;
+    font-size: 12px;
+    padding: 0 10px;
+  }
+  .share-image-dialog[data-slot="dialog-content"] { padding: 20px; }
+  .share-image-actions [data-slot="button"] { flex: 1 1 120px; }
+}

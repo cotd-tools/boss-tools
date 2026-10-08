@@ -1,8 +1,8 @@
 {
   "version": 1,
   "format": "avif",
-  "sourceBytes": 17731218,
-  "outputBytes": 4625428,
+  "sourceBytes": 17484282,
+  "outputBytes": 4477444,
   "images": [
     {
       "key": "1-1-1",
@@ -395,21 +395,6 @@
       "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
     },
     {
-      "key": "7-1-1",
-      "source": "7-1-1.jpeg",
-      "output": "7-1-1.avif",
-      "sourceSha256": "cd8895b61a8fb723d774d76ae7e21785817f3531476e8587650a6efbf8817d44",
-      "outputSha256": "b246eec736d2d68b5157d52a97df8823310dde1482d611c6577db61e781eec94",
-      "sourceBytes": 132141,
-      "outputBytes": 78946,
-      "width": 1440,
-      "height": 1080,
-      "format": "avif",
-      "quality": 65,
-      "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
-    },
-    {
       "key": "7-1-2",
       "source": "7-1-2.jpg",
       "output": "7-1-2.avif",
@@ -523,21 +508,6 @@
       "sourceBytes": 80671,
       "outputBytes": 37849,
       "width": 2403,
-      "height": 1080,
-      "format": "avif",
-      "quality": 65,
-      "sourceKept": false,
-      "recipe": "{\"format\":\"avif\",\"options\":{\"quality\":65,\"effort\":6,\"chromaSubsampling\":\"4:4:4\"},\"sharp\":\"0.35.5\",\"vips\":\"8.18.7\",\"pipeline\":1}"
-    },
-    {
-      "key": "7-3-1",
-      "source": "7-3-1.jpeg",
-      "output": "7-3-1.avif",
-      "sourceSha256": "dcb7112992f6c3ece77516f663d57941767e13c9263cce94b68a6844c2d92b96",
-      "outputSha256": "98f4dd6a4aba4d093bddb225dd15a3be018bc1cd2116c0b0a9902813d083fbc1",
-      "sourceBytes": 114795,
-      "outputBytes": 69038,
-      "width": 1440,
       "height": 1080,
       "format": "avif",
       "quality": 65,
