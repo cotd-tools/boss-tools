@@ -2,6 +2,7 @@ import { createApp, defineAsyncComponent, watch } from "vue";
 import "./style.css";
 import "./mobile.css";
 import "./field-guide.css";
+import "./share-image.css";
 import { createAppI18n } from "./i18n";
 import { LOCALE_STORAGE_KEY, resolveLocale } from "./i18n/locale";
 
