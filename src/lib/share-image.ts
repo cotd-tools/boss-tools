@@ -1,7 +1,6 @@
 export interface ShareSpot {
-  mapLabel: string;
   name: string;
-  pointLabel: string;
+  point: number;
   imageUrl?: string;
 }
 
@@ -12,10 +11,7 @@ export interface ShareImageContent {
   date: string;
   region: string;
   reset: string;
-  count: string;
-  reference: string;
   missing: string;
-  instruction: string;
   disclaimer: string;
   spots: ShareSpot[];
 }
@@ -27,7 +23,8 @@ const GUTTER = 32;
 const COLUMN_WIDTH = (WIDTH - PADDING * 2 - GUTTER) / 2;
 const ROW_HEIGHT = 448;
 const PHOTO_HEIGHT = 336;
-const GRID_TOP = 408;
+const PHOTO_OFFSET = 80;
+const GRID_TOP = 264;
 const INK = "#171717";
 const PAPER = "#fafaf7";
 const MUTED = "#64645f";
@@ -67,28 +64,6 @@ function text(ctx: CanvasRenderingContext2D, value: string, x: number, y: number
   ctx.fillText(value, x, y);
 }
 
-function wrappedText(ctx: CanvasRenderingContext2D, value: string, x: number, y: number, width: number, size: number, color: string) {
-  ctx.font = `400 ${size}px ${FONT}`;
-  ctx.fillStyle = color;
-  let line = "";
-  let baseline = y;
-  // Keep English words together, while allowing CJK text to wrap naturally.
-  const words = value.match(/\S+\s*|\s+/g) ?? [];
-  for (const word of words) {
-    const tokens = ctx.measureText(word).width > width ? Array.from(word) : [word];
-    for (const token of tokens) {
-      if (line && ctx.measureText(line + token).width > width) {
-        ctx.fillText(line.trimEnd(), x, baseline);
-        baseline += size * 1.5;
-        line = "";
-      }
-      line += token;
-    }
-  }
-  if (line) ctx.fillText(line.trimEnd(), x, baseline);
-  return baseline;
-}
-
 /** Render one PNG, so pasting includes every daily spot on all platforms. */
 export async function createShareImage(content: ShareImageContent): Promise<Blob> {
   if (!content.spots.length) throw new Error("No spots to share");
@@ -97,43 +72,37 @@ export async function createShareImage(content: ShareImageContent): Promise<Blob
     document.fonts.ready,
   ]);
   const rows = Math.ceil(content.spots.length / 2);
-  const gridBottom = GRID_TOP + rows * ROW_HEIGHT - 24;
+  const gridBottom = GRID_TOP + (rows - 1) * ROW_HEIGHT + PHOTO_OFFSET + PHOTO_HEIGHT;
   const canvas = document.createElement("canvas");
   canvas.width = WIDTH;
-  canvas.height = gridBottom + 288;
+  canvas.height = gridBottom + 144;
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Canvas unavailable");
   ctx.imageSmoothingQuality = "high";
   ctx.fillStyle = PAPER;
   ctx.fillRect(0, 0, WIDTH, canvas.height);
 
-  // Swiss typography: an asymmetric masthead anchored to the photo grid.
-  const secondColumn = PADDING + COLUMN_WIDTH + GUTTER;
-  text(ctx, content.brand, PADDING, 64, 26, INK, 700, COLUMN_WIDTH);
-  text(ctx, content.subtitle, secondColumn, 64, 18, MUTED, 400, COLUMN_WIDTH - 176);
-  rule(ctx, PADDING, 88, WIDTH - PADDING * 2);
-  text(ctx, content.title, PADDING - 4, 216, 100, INK, 700, 1192);
+  // A restrained Swiss masthead leaves the reference photos and spot numbers dominant.
+  text(ctx, content.brand, PADDING, 56, 22, INK, 600, COLUMN_WIDTH);
   ctx.textAlign = "right";
-  text(ctx, String(content.spots.length).padStart(2, "0"), WIDTH - PADDING + 4, 216, 128, ACCENT, 700);
-  text(ctx, content.count, WIDTH - PADDING, 256, 20, MUTED);
+  text(ctx, content.subtitle, WIDTH - PADDING, 56, 17, MUTED, 400, COLUMN_WIDTH);
   ctx.textAlign = "left";
-  text(ctx, content.date, PADDING, 312, 30, INK, 400, COLUMN_WIDTH);
-  text(ctx, content.region, secondColumn, 312, 26, INK, 700, COLUMN_WIDTH);
-  text(ctx, content.reset, secondColumn, 344, 20, MUTED, 400, COLUMN_WIDTH);
-  rule(ctx, PADDING, 368, WIDTH - PADDING * 2, 4);
+  text(ctx, content.title, PADDING - 3, 152, 84, INK, 700, WIDTH - PADDING * 2);
+  text(ctx, content.date, PADDING, 200, 26, INK, 400, COLUMN_WIDTH);
+  ctx.textAlign = "right";
+  text(ctx, `${content.region}  ·  ${content.reset}`, WIDTH - PADDING, 200, 22, MUTED, 400, COLUMN_WIDTH);
+  ctx.textAlign = "left";
+  rule(ctx, PADDING, 224, WIDTH - PADDING * 2);
 
   content.spots.forEach((spot, index) => {
     const x = PADDING + (index % 2) * (COLUMN_WIDTH + GUTTER);
     const y = GRID_TOP + Math.floor(index / 2) * ROW_HEIGHT;
-    rule(ctx, x, y, COLUMN_WIDTH);
-    text(ctx, spot.mapLabel, x - 2, y + 48, 48, INK, 700, 72);
-    text(ctx, spot.name, x + 88, y + 48, 32, INK, 700, COLUMN_WIDTH - 264);
-    text(ctx, content.reference, x + 88, y + 76, 18, MUTED, 400, COLUMN_WIDTH - 264);
+    text(ctx, spot.name, x, y + 60, 34, INK, 500, COLUMN_WIDTH - 112);
     ctx.textAlign = "right";
-    text(ctx, spot.pointLabel, x + COLUMN_WIDTH, y + 48, 26, ACCENT, 700, 152);
+    text(ctx, String(spot.point), x + COLUMN_WIDTH, y + 60, 76, ACCENT, 400, 88);
     ctx.textAlign = "left";
 
-    const photoY = y + 88;
+    const photoY = y + PHOTO_OFFSET;
     ctx.fillStyle = INK;
     ctx.fillRect(x, photoY, COLUMN_WIDTH, PHOTO_HEIGHT);
     const photo = photos[index];
@@ -148,13 +117,7 @@ export async function createShareImage(content: ShareImageContent): Promise<Blob
     }
   });
 
-  const footerY = gridBottom + 44;
-  rule(ctx, PADDING, footerY, WIDTH - PADDING * 2, 4);
-  wrappedText(ctx, content.instruction, PADDING, footerY + 48, COLUMN_WIDTH, 22, INK);
-  wrappedText(ctx, content.disclaimer, secondColumn, footerY + 48, COLUMN_WIDTH, 20, MUTED);
-  rule(ctx, PADDING, canvas.height - 80, WIDTH - PADDING * 2);
-  text(ctx, content.brand, PADDING, canvas.height - 40, 20, INK, 700);
-  text(ctx, content.subtitle, secondColumn, canvas.height - 40, 16, MUTED);
+  text(ctx, content.disclaimer, PADDING, gridBottom + 64, 18, MUTED, 400, WIDTH - PADDING * 2);
   return new Promise((resolve, reject) => canvas.toBlob(
     (blob) => blob ? resolve(blob) : reject(new Error("Could not encode share image")),
     "image/png",

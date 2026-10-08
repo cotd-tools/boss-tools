@@ -5,7 +5,7 @@ import { ArrowDownToLine, Copy, ImageIcon, LoaderCircle, RotateCcw } from "@luci
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { maps, referencesFor } from "@/lib/maps";
-import { bossCode, dateKey, formatDate, REGIONS, type RegionKey } from "@/lib/schedule";
+import { bossCode, dateKey, REGIONS, type RegionKey } from "@/lib/schedule";
 import { copyShareImage, createShareImage, type ShareImageContent } from "@/lib/share-image";
 
 const props = defineProps<{ date: Date; region: RegionKey }>();
@@ -30,20 +30,16 @@ function snapshot(): ShareImageContent {
     brand: t("brandName"),
     subtitle: t("brandSubtitle"),
     title: t("shareImageTitle"),
-    date: formatDate(props.date, locale.value, true),
+    date: dateKey(props.date).replaceAll("-", "."),
     region: t(props.region === "us_ca" ? "regionNorthAmerica" : "regionOther"),
     reset: t("shareImageReset", { hour: String(REGIONS[props.region].hour).padStart(2, "0") }),
-    count: t("mapCount", maps.length),
-    reference: t("waterPosition", { index: 1 }),
     missing: t("missingWater"),
-    instruction: t("photoInstruction"),
     disclaimer: t("disclaimer"),
     spots: maps.map((map) => {
       const point = Number(code[map.id - 1]);
       return {
-        mapLabel: String(map.id).padStart(2, "0"),
         name: t(`map${map.id}`),
-        pointLabel: t("pointLabel", { point }),
+        point,
         imageUrl: referencesFor(map.id, point)[0]?.url,
       };
     }),

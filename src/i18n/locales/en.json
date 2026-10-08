@@ -28,7 +28,7 @@
   "copyAll": "Copy spots",
   "shareImage": "Share image",
   "shareImageGenerating": "Generating…",
-  "shareImageTitle": "Daily spot guide",
+  "shareImageTitle": "Daily spots",
   "shareImageReset": "Updates at {hour}:00 local time",
   "shareImagePreviewTitle": "Spot sharing image",
   "shareImageFallback": "The image could not be copied automatically. Try copying again, save it, or touch and hold the image to share.",

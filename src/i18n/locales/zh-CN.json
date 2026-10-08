@@ -28,7 +28,7 @@
   "copyAll": "复制点位",
   "shareImage": "分享截图",
   "shareImageGenerating": "生成中…",
-  "shareImageTitle": "每日点位分享",
+  "shareImageTitle": "每日点位",
   "shareImageReset": "本地时间 {hour}:00 更新",
   "shareImagePreviewTitle": "点位分享图",
   "shareImageFallback": "图片未能自动复制。可以重试复制、保存图片，或长按下方图片分享。",
