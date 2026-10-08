@@ -57,6 +57,7 @@ import { maps, images, baseMaps, pointsFor, referencesFor } from "@/lib/maps";
 import BoatMap from "@/components/BoatMap.vue";
 import BoatMapPreview from "@/components/BoatMapPreview.vue";
 import PreferencesDialog from "@/components/PreferencesDialog.vue";
+import DailyShareButton from "@/components/DailyShareButton.vue";
 import locationData from "@/data/boat-locations.json";
 import { confirmedMarkers, validateLocations } from "@/lib/boat-locations";
 import { createImageGestureTracker, imageSwipeDirection } from "@/lib/image-gestures";
@@ -161,9 +162,9 @@ watch(
   { flush: "post" },
 );
 const waterImage = computed(() => waterImages.value[waterIndex.value]);
-const toast = ref<"copied" | "">("");
+const toast = ref<"copied" | "imageCopied" | "">("");
 let toastTimer: ReturnType<typeof setTimeout> | undefined;
-function notify(message: "copied") {
+function notify(message: "copied" | "imageCopied") {
   toast.value = message;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => (toast.value = ""), 3200);
@@ -524,9 +525,12 @@ const helpOpen = ref(false);
               }}</Badge>
             </h2>
           </div>
-          <Button variant="outline" class="copy-button" @click="copyPositions"
-            ><Copy :size="15" />{{ t("copyAll") }}</Button
-          >
+          <div class="daily-share-actions">
+            <Button variant="outline" class="copy-button" @click="copyPositions"
+              ><Copy :size="15" />{{ t("copyAll") }}</Button
+            >
+            <DailyShareButton :date="selectedDate" :region="region" @copied="notify('imageCopied')" />
+          </div>
         </div>
         <div class="date-toolbar">
           <div class="date-controls">
